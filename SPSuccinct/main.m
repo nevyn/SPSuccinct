@@ -27,13 +27,12 @@
 }
 @end
 
-int main (int argc, const char * argv[])
-{
+int main (int argc, const char * argv[]) {
 	NSAutoreleasePool *pool = [NSAutoreleasePool new];
 	
 	[[[Foo new] autorelease] main];
 	
-    [pool drain];
+	[pool drain];
 	return 0;
 }
 
