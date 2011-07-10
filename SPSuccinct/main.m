@@ -1,22 +1,32 @@
-//
-//  main.m
-//  SPSuccinct
-//
-//  Created by Joachim Bengtsson on 2011-07-10.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
+#import "SPDepends.h"
+
+@interface Foo : NSObject
+@property(retain) NSString *a, *b;
+@property(retain) Foo *y;
+@end
+@implementation Foo
+@synthesize a, b, y;
+-(void)main;
+{
+	Foo *x = [[Foo new] autorelease];
+	self.y = [[Foo new] autorelease];
+	x.a = @"Hello";
+	x.b = @"there";
+	$depends(@"printing", x, @"a", @"b", y, @"a", ^{
+		NSLog(@"%@ %@, %@", x.a, x.b, selff.y.a);
+	});
+	y.a = @"world!";
+}
+@end
 
 int main (int argc, const char * argv[])
 {
-
-	@autoreleasepool {
-	    
-	    // insert code here...
-	    NSLog(@"Hello, World!");
-	    
-	}
-    return 0;
+	NSAutoreleasePool *pool = [NSAutoreleasePool new];
+	
+	[[[Foo new] autorelease] main];
+	
+    [pool drain];
+	return 0;
 }
 
