@@ -10,6 +10,9 @@
 		0523C10B13C9EB6500C72DB5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0523C10A13C9EB6500C72DB5 /* Foundation.framework */; };
 		0523C10E13C9EB6500C72DB5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0523C10D13C9EB6500C72DB5 /* main.m */; };
 		0523C11213C9EB6500C72DB5 /* SPSuccinct.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0523C11113C9EB6500C72DB5 /* SPSuccinct.1 */; };
+		0523C11E13C9EC2200C72DB5 /* SPDepends.m in Sources */ = {isa = PBXBuildFile; fileRef = 0523C11913C9EC2200C72DB5 /* SPDepends.m */; };
+		0523C11F13C9EC2200C72DB5 /* SPKVONotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0523C11B13C9EC2200C72DB5 /* SPKVONotificationCenter.m */; };
+		0523C12013C9EC2200C72DB5 /* SPLowVerbosity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0523C11D13C9EC2200C72DB5 /* SPLowVerbosity.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,8 +32,14 @@
 		0523C10613C9EB6500C72DB5 /* SPSuccinct */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SPSuccinct; sourceTree = BUILT_PRODUCTS_DIR; };
 		0523C10A13C9EB6500C72DB5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		0523C10D13C9EB6500C72DB5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		0523C11013C9EB6500C72DB5 /* SPSuccinct-Prefix.pch */ = {isa = PBXFileReference; path = "SPSuccinct-Prefix.pch"; sourceTree = "<group>"; };
+		0523C11013C9EB6500C72DB5 /* SPSuccinct-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SPSuccinct-Prefix.pch"; sourceTree = "<group>"; };
 		0523C11113C9EB6500C72DB5 /* SPSuccinct.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = SPSuccinct.1; sourceTree = "<group>"; };
+		0523C11813C9EC2200C72DB5 /* SPDepends.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPDepends.h; sourceTree = "<group>"; };
+		0523C11913C9EC2200C72DB5 /* SPDepends.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPDepends.m; sourceTree = "<group>"; };
+		0523C11A13C9EC2200C72DB5 /* SPKVONotificationCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPKVONotificationCenter.h; sourceTree = "<group>"; };
+		0523C11B13C9EC2200C72DB5 /* SPKVONotificationCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPKVONotificationCenter.m; sourceTree = "<group>"; };
+		0523C11C13C9EC2200C72DB5 /* SPLowVerbosity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPLowVerbosity.h; sourceTree = "<group>"; };
+		0523C11D13C9EC2200C72DB5 /* SPLowVerbosity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPLowVerbosity.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +84,12 @@
 			children = (
 				0523C10D13C9EB6500C72DB5 /* main.m */,
 				0523C11113C9EB6500C72DB5 /* SPSuccinct.1 */,
+				0523C11813C9EC2200C72DB5 /* SPDepends.h */,
+				0523C11913C9EC2200C72DB5 /* SPDepends.m */,
+				0523C11A13C9EC2200C72DB5 /* SPKVONotificationCenter.h */,
+				0523C11B13C9EC2200C72DB5 /* SPKVONotificationCenter.m */,
+				0523C11C13C9EC2200C72DB5 /* SPLowVerbosity.h */,
+				0523C11D13C9EC2200C72DB5 /* SPLowVerbosity.m */,
 				0523C10F13C9EB6500C72DB5 /* Supporting Files */,
 			);
 			path = SPSuccinct;
@@ -136,6 +151,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				0523C10E13C9EB6500C72DB5 /* main.m in Sources */,
+				0523C11E13C9EC2200C72DB5 /* SPDepends.m in Sources */,
+				0523C11F13C9EC2200C72DB5 /* SPKVONotificationCenter.m in Sources */,
+				0523C12013C9EC2200C72DB5 /* SPLowVerbosity.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -192,18 +210,24 @@
 		0523C11613C9EB6500C72DB5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN_OBJCPP_ARC_ABI = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SPSuccinct/SPSuccinct-Prefix.pch";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.6;
 			};
 			name = Debug;
 		};
 		0523C11713C9EB6500C72DB5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN_OBJCPP_ARC_ABI = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SPSuccinct/SPSuccinct-Prefix.pch";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.6;
 			};
 			name = Release;
 		};
