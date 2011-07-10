@@ -13,9 +13,16 @@
 	self.y = [[Foo new] autorelease];
 	x.a = @"Hello";
 	x.b = @"there";
+	
+	// This line establishes a dependency from 'self' to x.a, x.b and y.a.
 	$depends(@"printing", x, @"a", @"b", y, @"a", ^{
 		NSLog(@"%@ %@, %@", x.a, x.b, selff.y.a);
 	});
+	// It is called once after the dependency is established, similarly to as if
+	// you had registered KVO with NSKeyValueObservingOptionInitial.
+	
+	// After changing y.a, the 'printing' dependency's block is ran, since
+	// 'self' now depends on y.a.
 	y.a = @"world!";
 }
 @end
