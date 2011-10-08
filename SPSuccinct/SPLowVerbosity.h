@@ -5,7 +5,7 @@
 #define $set(...) [NSSet setWithObjects:__VA_ARGS__, nil]
 #define $marray(...) [NSMutableArray arrayWithObjects:__VA_ARGS__, nil]
 #define $dict(...) ({ __unsafe_unretained id pairs[] = {__VA_ARGS__}; SPDictionaryWithPairs(pairs, sizeof(pairs)/sizeof(id), false); })
-#define $mdict(...) ({ id pairs[] = {__VA_ARGS__}; SPDictionaryWithPairs(pairs, sizeof(pairs)/sizeof(id), true); })
+#define $mdict(...) ({ __unsafe_unretained id pairs[] = {__VA_ARGS__}; SPDictionaryWithPairs(pairs, sizeof(pairs)/sizeof(id), true); })
 #define $num(val) [NSNumber numberWithInt:val]
 #define $numf(val) [NSNumber numberWithDouble:val]
 #define $sprintf(...) [NSString stringWithFormat:__VA_ARGS__]
