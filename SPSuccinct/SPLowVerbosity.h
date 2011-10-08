@@ -31,6 +31,8 @@ extern "C" {
 NSString *$urlencode(NSString *unencoded);
 id SPDictionaryWithPairs(__unsafe_unretained id *pairs, size_t count, BOOL mutablep);
 
+NSError *$makeErr(NSString *domain, NSInteger code, NSString *localizedDesc);
+
 #ifdef __cplusplus
 }
 #endif

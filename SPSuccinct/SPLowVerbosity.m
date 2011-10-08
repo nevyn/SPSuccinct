@@ -21,6 +21,14 @@ id SPDictionaryWithPairs(__unsafe_unretained id *pairs, size_t count, BOOL mutab
 	}
 	return [mutablep?[NSMutableDictionary class]:[NSDictionary class] dictionaryWithObjects:values forKeys:keys count:kvi];
 }
+
+NSError *$makeErr(NSString *domain, NSInteger code, NSString *localizedDesc)
+{
+    return [NSError errorWithDomain:domain code:code userInfo:$dict(
+        NSLocalizedDescriptionKey, localizedDesc
+    )];
+}
+
 #if NS_BLOCKS_AVAILABLE
 @implementation NSDictionary (SPMap)
 -(NSDictionary*)sp_map:(id(^)(NSString *key, id value))mapper;
