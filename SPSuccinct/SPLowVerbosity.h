@@ -34,3 +34,9 @@ id SPDictionaryWithPairs(__unsafe_unretained id *pairs, size_t count, BOOL mutab
 #ifdef __cplusplus
 }
 #endif
+
+#if NS_BLOCKS_AVAILABLE
+@interface NSDictionary (SPMap)
+-(NSDictionary*)sp_map:(id(^)(NSString *key, id value))mapper;
+@end
+#endif

@@ -21,3 +21,14 @@ id SPDictionaryWithPairs(__unsafe_unretained id *pairs, size_t count, BOOL mutab
 	}
 	return [mutablep?[NSMutableDictionary class]:[NSDictionary class] dictionaryWithObjects:values forKeys:keys count:kvi];
 }
+#if NS_BLOCKS_AVAILABLE
+@implementation NSDictionary (SPMap)
+-(NSDictionary*)sp_map:(id(^)(NSString *key, id value))mapper;
+{
+    NSMutableDictionary *d = [NSMutableDictionary dictionaryWithCapacity:[self count]];
+    for(NSString *key in self.allKeys)
+        [d setObject:mapper(key, [self objectForKey:key]) forKey:key];
+    return [[d copy] autorelease];
+}
+@end
+#endif
