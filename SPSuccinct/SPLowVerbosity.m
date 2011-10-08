@@ -2,7 +2,7 @@
 
 NSString *$urlencode(NSString *unencoded) {
 	// Thanks, http://www.tikirobot.net/wp/2007/01/27/url-encode-in-cocoa/
-	return [(id)CFURLCreateStringByAddingPercentEscapes(
+	return [(__bridge id)CFURLCreateStringByAddingPercentEscapes(
 														kCFAllocatorDefault, 
 														(CFStringRef)unencoded, 
 														NULL, 
@@ -11,7 +11,7 @@ NSString *$urlencode(NSString *unencoded) {
 														) autorelease];
 }
 
-id SPDictionaryWithPairs(id *pairs, size_t count, BOOL mutablep)
+id SPDictionaryWithPairs(__unsafe_unretained id *pairs, size_t count, BOOL mutablep)
 {
 	id keys[count], values[count];
 	size_t kvi = 0;
