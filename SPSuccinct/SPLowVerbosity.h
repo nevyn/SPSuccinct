@@ -4,8 +4,9 @@
 #define $array(...) [NSArray arrayWithObjects:__VA_ARGS__, nil]
 #define $set(...) [NSSet setWithObjects:__VA_ARGS__, nil]
 #define $marray(...) [NSMutableArray arrayWithObjects:__VA_ARGS__, nil]
-#define $dict(...) ({ __unsafe_unretained id pairs[] = {__VA_ARGS__}; SPDictionaryWithPairs(pairs, sizeof(pairs)/sizeof(id), false); })
-#define $mdict(...) ({ __unsafe_unretained id pairs[] = {__VA_ARGS__}; SPDictionaryWithPairs(pairs, sizeof(pairs)/sizeof(id), true); })
+#define $dict(...)  ({ NSArray *pairs = [NSArray arrayWithObjects:__VA_ARGS__, nil]; SPDictionaryWithPairs(pairs, false); })
+#define $mdict(...) ({ NSArray *pairs = [NSArray arrayWithObjects:__VA_ARGS__, nil]; SPDictionaryWithPairs(pairs, true);  })
+
 #define $num(val) [NSNumber numberWithInt:val]
 #define $numf(val) [NSNumber numberWithDouble:val]
 #define $sprintf(...) [NSString stringWithFormat:__VA_ARGS__]
@@ -29,7 +30,7 @@ extern "C" {
 	
 
 NSString *$urlencode(NSString *unencoded);
-id SPDictionaryWithPairs(__unsafe_unretained id *pairs, size_t count, BOOL mutablep);
+id SPDictionaryWithPairs(NSArray *pairs, BOOL mutablep);
 
 NSError *$makeErr(NSString *domain, NSInteger code, NSString *localizedDesc);
 

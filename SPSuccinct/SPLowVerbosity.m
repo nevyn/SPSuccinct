@@ -11,13 +11,14 @@ NSString *$urlencode(NSString *unencoded) {
 														) autorelease];
 }
 
-id SPDictionaryWithPairs(__unsafe_unretained id *pairs, size_t count, BOOL mutablep)
+id SPDictionaryWithPairs(NSArray *pairs, BOOL mutablep)
 {
+	NSUInteger count = pairs.count/2;
 	id keys[count], values[count];
 	size_t kvi = 0;
-	for(size_t idx = 0; idx < count;) {
-		keys[kvi] = pairs[idx++];
-		values[kvi++] = pairs[idx++];
+	for(size_t idx = 0; kvi < count;) {
+		keys[kvi] = [pairs objectAtIndex:idx++];
+		values[kvi++] = [pairs objectAtIndex:idx++];
 	}
 	return [mutablep?[NSMutableDictionary class]:[NSDictionary class] dictionaryWithObjects:values forKeys:keys count:kvi];
 }
