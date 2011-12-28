@@ -33,7 +33,7 @@ id SPAddDependency(id owner, NSString *associationName, NSArray *dependenciesAnd
  * Like SPAddDependency, but can be called varg style without an explicit array object.
  * End with the callback and then nil.
  */
-id SPAddDependencyV(id owner, NSString *associationName, ...);
+id SPAddDependencyV(id owner, NSString *associationName, ...) NS_REQUIRES_NIL_TERMINATION;
 
 /**
  * Removes all dependencies this object has on other objects.
