@@ -47,7 +47,7 @@
 -(void)invalidate;
 {
 	for(SPKVObservation *observation in _subscriptions)
-		[observation unregister];
+		[observation invalidate];
 	self.callback = nil;
 }
 -(void)dealloc;
