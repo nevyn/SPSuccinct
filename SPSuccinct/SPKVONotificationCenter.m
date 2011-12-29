@@ -6,30 +6,32 @@
 
 
 static NSString *SPKVOContext = @"SPKVObservation";
-typedef void (*SPKVOCallback)(id, SEL, NSDictionary*, id, NSString *);
+typedef void (*SPKVOCallbackFunc)(id, SEL, NSDictionary*, id, NSString *);
 
 @interface SPKVObservation ()
 @property(nonatomic, assign) id observer;
 @property(nonatomic, assign) id observed;
 @property(nonatomic, copy)   NSString *keyPath;
 @property(nonatomic)         SEL selector;
+@property(nonatomic, copy) SPKVOCallback callback;
 @end
 
 
 @implementation SPKVObservation
-@synthesize observer = _observer, observed = _observed, selector = _sel, keyPath = _keyPath;
--(id)initWithObserver:(id)observer observed:(id)observed keyPath:(NSString*)keyPath selector:(SEL)sel options:(NSKeyValueObservingOptions)options;
+@synthesize observer = _observer, observed = _observed, selector = _sel, keyPath = _keyPath, callback = _callback;
+-(id)initWithObserver:(id)observer observed:(id)observed keyPath:(NSString*)keyPath selector:(SEL)sel callback:(SPKVOCallback)callback options:(NSKeyValueObservingOptions)options;
 {
 	_observer = observer;
 	_observed = observed;
 	_sel = sel;
+	self.callback = callback;
 	self.keyPath = keyPath;
 	[_observed addObserver:self forKeyPath:keyPath options:options context:SPKVOContext];
 	return self;
 }
 -(void)dealloc;
 {
-	[self unregister];
+	[self invalidate];
 	[_keyPath release];
 	[super dealloc];
 }
@@ -37,12 +39,14 @@ typedef void (*SPKVOCallback)(id, SEL, NSDictionary*, id, NSString *);
 {
     if(context != SPKVOContext) return [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 	
-	if(_sel)
-		((SPKVOCallback)objc_msgSend)(_observer, _sel, change, object, keyPath);
+	if(_callback)
+		_callback(change, object, keyPath);
+	else if(_sel)
+		((SPKVOCallbackFunc)objc_msgSend)(_observer, _sel, change, object, keyPath);
 	else
 		[_observer observeValueForKeyPath:keyPath ofObject:object change:change context:self];
 }
--(id)unregister;
+-(id)invalidate;
 {
 	[_observed removeObserver:self forKeyPath:_keyPath];
 	_observed = nil;
@@ -70,7 +74,23 @@ typedef void (*SPKVOCallback)(id, SEL, NSDictionary*, id, NSString *);
 }
 -(SPKVObservation*)addObserver:(id)observer toObject:(id)observed forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options selector:(SEL)sel;
 {
-	SPKVObservation *helper = [[[SPKVObservation alloc] initWithObserver:observer observed:observed keyPath:keyPath selector:sel options:options] autorelease];
+	SPKVObservation *helper = [[[SPKVObservation alloc] initWithObserver:observer observed:observed keyPath:keyPath selector:sel callback:nil options:options] autorelease];
 	return helper;
+}
+-(SPKVObservation*)addObserver:(id)observer toObject:(id)observed forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options callback:(SPKVOCallback)callback;
+{
+	SPKVObservation *helper = [[[SPKVObservation alloc] initWithObserver:observer observed:observed keyPath:keyPath selector:NULL callback:callback options:options] autorelease];
+	return helper;
+}
+@end
+
+@implementation NSObject (SPKVONotificationCenterAddition)
+-(SPKVObservation*)sp_addObserver:(NSObject*)observer forKeyPath:(NSString*)kp options:(NSKeyValueObservingOptions)options selector:(SEL)sel
+{
+	return [[SPKVONotificationCenter defaultCenter] addObserver:observer toObject:self forKeyPath:kp options:options selector:sel];
+}
+-(SPKVObservation*)sp_addObserver:(NSObject*)observer forKeyPath:(NSString*)kp options:(NSKeyValueObservingOptions)options callback:(void(^)(NSDictionary*, id, NSString*))callback
+{
+	return [[SPKVONotificationCenter defaultCenter] addObserver:observer toObject:self forKeyPath:kp options:options callback:callback];
 }
 @end
