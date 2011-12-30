@@ -30,6 +30,9 @@
 		return predicate(obj);
 	}]];
 }
+-(void)sp_each:(void(^)(id obj))iterator;{
+	for(id obj in self) iterator(obj);
+}
 @end
 
 @implementation NSDictionary (TCFunctional)
