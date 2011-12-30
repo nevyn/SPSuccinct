@@ -29,15 +29,3 @@ NSError *$makeErr(NSString *domain, NSInteger code, NSString *localizedDesc)
         NSLocalizedDescriptionKey, localizedDesc
     )];
 }
-
-#if NS_BLOCKS_AVAILABLE
-@implementation NSDictionary (SPMap)
--(NSDictionary*)sp_map:(id(^)(NSString *key, id value))mapper;
-{
-    NSMutableDictionary *d = [NSMutableDictionary dictionaryWithCapacity:[self count]];
-    for(NSString *key in self.allKeys)
-        [d setObject:mapper(key, [self objectForKey:key]) forKey:key];
-    return [[d copy] autorelease];
-}
-@end
-#endif

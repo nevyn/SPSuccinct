@@ -1,5 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "SPDepends.h"
+#import "SPFunctional.h"
+#import "SPLowVerbosity.h"
 
 @interface Foo : NSObject
 @property(retain) NSString *a, *b;
@@ -31,6 +33,12 @@ int main (int argc, const char * argv[]) {
 	NSAutoreleasePool *pool = [NSAutoreleasePool new];
 	
 	[[[Foo new] autorelease] main];
+    
+    
+    NSLog(@"Yay multiplication: %@", [$array($num(1), $num(2), $num(3)) sp_map:^(id obj) {
+        return $num([obj intValue]*2);
+    }]);
+    
 	
 	[pool drain];
 	return 0;

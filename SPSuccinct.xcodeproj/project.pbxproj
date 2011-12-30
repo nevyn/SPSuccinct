@@ -13,6 +13,7 @@
 		0523C11E13C9EC2200C72DB5 /* SPDepends.m in Sources */ = {isa = PBXBuildFile; fileRef = 0523C11913C9EC2200C72DB5 /* SPDepends.m */; };
 		0523C11F13C9EC2200C72DB5 /* SPKVONotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0523C11B13C9EC2200C72DB5 /* SPKVONotificationCenter.m */; };
 		0523C12013C9EC2200C72DB5 /* SPLowVerbosity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0523C11D13C9EC2200C72DB5 /* SPLowVerbosity.m */; };
+		05FFF0AA14AD34F20096896D /* SPFunctional.m in Sources */ = {isa = PBXBuildFile; fileRef = 05FFF0A914AD34F20096896D /* SPFunctional.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -40,6 +41,8 @@
 		0523C11B13C9EC2200C72DB5 /* SPKVONotificationCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPKVONotificationCenter.m; sourceTree = "<group>"; };
 		0523C11C13C9EC2200C72DB5 /* SPLowVerbosity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPLowVerbosity.h; sourceTree = "<group>"; };
 		0523C11D13C9EC2200C72DB5 /* SPLowVerbosity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPLowVerbosity.m; sourceTree = "<group>"; };
+		05FFF0A814AD34F20096896D /* SPFunctional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPFunctional.h; sourceTree = "<group>"; };
+		05FFF0A914AD34F20096896D /* SPFunctional.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPFunctional.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +89,8 @@
 				0523C11113C9EB6500C72DB5 /* SPSuccinct.1 */,
 				0523C11813C9EC2200C72DB5 /* SPDepends.h */,
 				0523C11913C9EC2200C72DB5 /* SPDepends.m */,
+				05FFF0A814AD34F20096896D /* SPFunctional.h */,
+				05FFF0A914AD34F20096896D /* SPFunctional.m */,
 				0523C11A13C9EC2200C72DB5 /* SPKVONotificationCenter.h */,
 				0523C11B13C9EC2200C72DB5 /* SPKVONotificationCenter.m */,
 				0523C11C13C9EC2200C72DB5 /* SPLowVerbosity.h */,
@@ -154,6 +159,7 @@
 				0523C11E13C9EC2200C72DB5 /* SPDepends.m in Sources */,
 				0523C11F13C9EC2200C72DB5 /* SPKVONotificationCenter.m in Sources */,
 				0523C12013C9EC2200C72DB5 /* SPLowVerbosity.m in Sources */,
+				05FFF0AA14AD34F20096896D /* SPFunctional.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -250,6 +256,7 @@
 				0523C11713C9EB6500C72DB5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
