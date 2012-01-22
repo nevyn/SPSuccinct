@@ -3,7 +3,7 @@
 #import <objc/runtime.h>
 
 @interface SPDependency : NSObject
-@property(copy) SPDependsCallback callback;
+@property(copy) SPDependsFancyCallback callback;
 @property(assign) id owner;
 @property(retain) NSMutableArray *subscriptions;
 @end
@@ -12,7 +12,7 @@
 @synthesize callback = _callback, owner = _owner;
 @synthesize subscriptions = _subscriptions;
 
--initWithDependencies:(NSArray*)pairs callback:(SPDependsCallback)callback owner:(id)owner;
+-initWithDependencies:(NSArray*)pairs callback:(SPDependsFancyCallback)callback owner:(id)owner;
 {
 	
 	self.callback = callback;
@@ -28,7 +28,7 @@
 	id next = [en nextObject];
 	
 	for(;;) {
-		SPKVObservation *subscription = [nc addObserver:self toObject:object forKeyPath:next options:0 selector:@selector(somethingChanged)];
+		SPKVObservation *subscription = [nc addObserver:self toObject:object forKeyPath:next options:0 selector:@selector(somethingChanged:inObject:forKey:)];
 		[_subscriptions addObject:subscription];
 		
 		next = [en nextObject];
@@ -40,7 +40,7 @@
 		}
 	}
 	
-	self.callback();
+	self.callback(nil, nil, nil);
 	
 	return self;
 }
@@ -57,13 +57,13 @@
 	self.callback = nil;
 	[super dealloc];
 }
--(void)somethingChanged;
+-(void)somethingChanged:(NSDictionary*)change inObject:(id)object forKey:(NSString*)key;
 {
 #if _DEBUG
 	NSAssert(self.callback != nil, @"Somehow a KVO reached us after an 'invalidate'?");
 #endif
 	if(self.callback)
-		self.callback();
+		self.callback(change, object, key);
 }
 @end
 
@@ -71,7 +71,7 @@ static void *dependenciesKey = &dependenciesKey;
 
 id SPAddDependency(id owner, NSString *associationName, NSArray *dependenciesAndNames, SPDependsCallback callback)
 {
-	id dep = [[[SPDependency alloc] initWithDependencies:dependenciesAndNames callback:callback owner:owner] autorelease];
+	id dep = [[[SPDependency alloc] initWithDependencies:dependenciesAndNames callback:(SPDependsFancyCallback)callback owner:owner] autorelease];
 	if(owner && associationName) {
 		NSMutableDictionary *dependencies = objc_getAssociatedObject(owner, dependenciesKey);
 		if(!dependencies) dependencies = [NSMutableDictionary dictionary];

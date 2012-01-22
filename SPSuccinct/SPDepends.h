@@ -1,4 +1,5 @@
 typedef void(^SPDependsCallback)();
+typedef void(^SPDependsFancyCallback)(NSDictionary *change, id object, NSString *keyPath);
 
 #if __cplusplus
 extern "C" {
@@ -20,7 +21,7 @@ extern "C" {
  *                        you must retain the returned dependency object until the 
  *                        dependency becomes invalid.
  * @param callback Called when the association changes. Always called once immediately
- *                 after registration.
+ *                 after registration. Can be a SPDependsFancyCallback if you want.
  * @example
  *  __block __typeof(self) selff; // weak reference
  *  NSArray *dependencies = [NSArray arrayWithObjects:foo, @"bar", @"baz", a, @"b", nil]
