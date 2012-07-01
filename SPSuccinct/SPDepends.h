@@ -45,10 +45,16 @@ void SPRemoveAssociatedDependencies(id owner);
 }
 #endif
 
+#if __has_feature(objc_arc)
+#define SPDependsWeakSelf __weak __typeof(self)
+#else
+#define SPDependsWeakSelf __block __typeof(self)
+#endif
+
 /**
  * Shortcut for SPAddDependencyV
  */
 #define $depends(associationName, object, keypath, ...) ({ \
-	__block __typeof(self) selff = self; /* Weak reference*/ \
+	SPDependsWeakSelf selff = self; /* Weak reference*/ \
 	SPAddDependencyV(self, associationName, object, keypath, __VA_ARGS__, nil);\
 })
