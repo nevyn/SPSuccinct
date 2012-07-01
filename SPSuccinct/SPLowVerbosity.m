@@ -2,7 +2,7 @@
 
 NSString *$urlencode(NSString *unencoded) {
 	// Thanks, http://www.tikirobot.net/wp/2007/01/27/url-encode-in-cocoa/
-	return [(__bridge id)CFURLCreateStringByAddingPercentEscapes(
+	return [(id)CFURLCreateStringByAddingPercentEscapes(
 														kCFAllocatorDefault, 
 														(CFStringRef)unencoded, 
 														NULL, 
