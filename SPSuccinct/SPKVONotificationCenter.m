@@ -37,7 +37,10 @@ typedef void (*SPKVOCallbackFunc)(id, SEL, NSDictionary*, id, NSString *);
 }
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if(context != SPKVOContext) return [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    if(context != SPKVOContext) {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+        return;
+    }
 	
 	if(_callback)
 		_callback(change, object, keyPath);
@@ -46,11 +49,10 @@ typedef void (*SPKVOCallbackFunc)(id, SEL, NSDictionary*, id, NSString *);
 	else
 		[_observer observeValueForKeyPath:keyPath ofObject:object change:change context:self];
 }
--(id)invalidate;
+-(void)invalidate;
 {
 	[_observed removeObserver:self forKeyPath:_keyPath];
 	_observed = nil;
-	return self;
 }
 @end
 

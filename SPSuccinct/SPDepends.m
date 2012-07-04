@@ -12,7 +12,7 @@
 @synthesize callback = _callback, owner = _owner;
 @synthesize subscriptions = _subscriptions;
 
--initWithDependencies:(NSArray*)pairs callback:(SPDependsFancyCallback)callback owner:(id)owner;
+-(id)initWithDependencies:(NSArray*)pairs callback:(SPDependsFancyCallback)callback owner:(id)owner;
 {
 	
 	self.callback = callback;
@@ -59,7 +59,7 @@
 }
 -(void)somethingChanged:(NSDictionary*)change inObject:(id)object forKey:(NSString*)key;
 {
-#if _DEBUG
+#ifdef _DEBUG
 	NSAssert(self.callback != nil, @"Somehow a KVO reached us after an 'invalidate'?");
 #endif
 	if(self.callback)

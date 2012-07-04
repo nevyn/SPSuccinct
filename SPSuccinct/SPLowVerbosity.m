@@ -2,13 +2,18 @@
 
 NSString *$urlencode(NSString *unencoded) {
 	// Thanks, http://www.tikirobot.net/wp/2007/01/27/url-encode-in-cocoa/
-	return [(id)CFURLCreateStringByAddingPercentEscapes(
+    CFStringRef ret = CFURLCreateStringByAddingPercentEscapes(
 														kCFAllocatorDefault, 
 														(CFStringRef)unencoded, 
 														NULL, 
 														(CFStringRef)@";/?:@&=+$,", 
 														kCFStringEncodingUTF8
-														) autorelease];
+														);
+#if __has_feature(objc_arc)
+    return [(__bridge id)ret;
+#else
+    return [(id)ret autorelease];
+#endif
 }
 
 id SPDictionaryWithPairs(NSArray *pairs, BOOL mutablep)

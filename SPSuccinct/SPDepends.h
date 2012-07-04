@@ -1,7 +1,7 @@
 typedef void(^SPDependsCallback)();
 typedef void(^SPDependsFancyCallback)(NSDictionary *change, id object, NSString *keyPath);
 
-#if __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 
@@ -41,7 +41,7 @@ id SPAddDependencyV(id owner, NSString *associationName, ...) NS_REQUIRES_NIL_TE
  */
 void SPRemoveAssociatedDependencies(id owner);
 
-#if __cplusplus
+#ifdef __cplusplus
 }
 #endif
 
