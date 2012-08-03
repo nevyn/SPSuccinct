@@ -35,6 +35,33 @@
 }
 @end
 
+@implementation NSSet (Functional)
+-(NSSet*)sp_map:(id(^)(id obj))mapper;
+{
+	NSMutableSet *mapped = [NSMutableSet setWithCapacity:self.count];
+	for (id obj in self)
+		[mapped addObject:mapper(obj)];
+	return mapped;
+}
+-(id)sp_collect:(id)start with:(id(^)(id sum, id obj))collector;
+{
+	id sum = start;
+	for (id obj in self)
+		sum = collector(sum, obj);
+	return sum;
+}
+-(NSSet*)sp_filter:(BOOL(^)(id obj))predicate;
+{
+	return [self objectsPassingTest:^(id obj, BOOL *stop) {
+		return predicate(obj);
+	}];
+}
+-(void)sp_each:(void(^)(id obj))iterator;{
+	for(id obj in self) iterator(obj);
+}
+@end
+
+
 @implementation NSDictionary (TCFunctional)
 -(NSDictionary*)sp_map:(id(^)(NSString *key, id value))mapper;
 {
