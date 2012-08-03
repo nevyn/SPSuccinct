@@ -20,4 +20,5 @@ typedef void(^SPKVOCallback)(NSDictionary* change, id object, NSString* keyPath)
 @interface NSObject (SPKVONotificationCenterAddition)
 -(SPKVObservation*)sp_addObserver:(NSObject*)observer forKeyPath:(NSString*)kp options:(NSKeyValueObservingOptions)options selector:(SEL)sel;
 -(SPKVObservation*)sp_addObserver:(NSObject*)observer forKeyPath:(NSString*)kp options:(NSKeyValueObservingOptions)options callback:(SPKVOCallback)callback;
+-(SPKVObservation*)sp_observe:(NSString*)kp removed:(void(^)(id))onRemoved added:(void(^)(id))onAdded;
 @end

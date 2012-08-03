@@ -95,4 +95,25 @@ typedef void (*SPKVOCallbackFunc)(id, SEL, NSDictionary*, id, NSString *);
 {
 	return [[SPKVONotificationCenter defaultCenter] addObserver:observer toObject:self forKeyPath:kp options:options callback:callback];
 }
+-(SPKVObservation*)sp_observe:(NSString*)kp removed:(void(^)(id))onRemoved added:(void(^)(id))onAdded;
+{
+    onAdded = [[onAdded copy] autorelease] ?:(id)^(){};
+    onRemoved = [[onRemoved copy] autorelease] ?:(id)^(){};
+    
+    return [self sp_addObserver:nil forKeyPath:kp options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew callback:^(NSDictionary *change, id object, NSString *keyPath) {
+        id olds = [change objectForKey:NSKeyValueChangeOldKey];
+        id news = [change objectForKey:NSKeyValueChangeNewKey];
+        if(![olds conformsToProtocol:@protocol(NSFastEnumeration)])
+            olds = olds ? [NSArray arrayWithObject:olds] : [NSArray array];
+        if(![news conformsToProtocol:@protocol(NSFastEnumeration)])
+            news = news ? [NSArray arrayWithObject:news] : [NSArray array];
+        
+        for(id old in olds)
+            if(![news containsObject:old])
+                onRemoved(old);
+        for(id new in news)
+            if(![olds containsObject:new])
+                onAdded(new);
+    }];
+}
 @end
