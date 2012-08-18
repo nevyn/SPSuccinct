@@ -33,6 +33,20 @@
 -(void)sp_each:(void(^)(id obj))iterator;{
 	for(id obj in self) iterator(obj);
 }
+-(id)sp_any:(BOOL(^)(id obj))iterator;
+{
+	for(id obj in self)
+		if (iterator(obj))
+			return obj;
+	return NULL;
+}
+-(BOOL)sp_all:(BOOL(^)(id obj))iterator;
+{
+	for(id obj in self)
+		if (!iterator(obj))
+			return NO;
+	return YES;
+}
 @end
 
 @implementation NSSet (Functional)
@@ -59,6 +73,20 @@
 -(void)sp_each:(void(^)(id obj))iterator;{
 	for(id obj in self) iterator(obj);
 }
+-(id)sp_any:(BOOL(^)(id obj))iterator;
+{
+	for(id obj in self)
+		if (iterator(obj))
+			return obj;
+	return NULL;
+}
+-(BOOL)sp_all:(BOOL(^)(id obj))iterator;
+{
+	for(id obj in self)
+		if (!iterator(obj))
+			return NO;
+	return YES;
+}
 @end
 
 
@@ -81,5 +109,19 @@
 		[d setObject:[self objectForKey:key] forKey:key];
 	
 	return d;
+}
+-(id)sp_any:(BOOL(^)(id key, id val))iterator;
+{
+	for(id key in self)
+		if (iterator(key, [self objectForKey:key]))
+			return [self objectForKey:key];
+	return NULL;
+}
+-(BOOL)sp_all:(BOOL(^)(id key, id val))iterator;
+{
+	for(id key in self)
+		if (!iterator(key, [self objectForKey:key]))
+			return NO;
+	return YES;
 }
 @end
