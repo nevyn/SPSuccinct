@@ -97,10 +97,17 @@ typedef void (*SPKVOCallbackFunc)(id, SEL, NSDictionary*, id, NSString *);
 }
 -(SPKVObservation*)sp_observe:(NSString*)kp removed:(void(^)(id))onRemoved added:(void(^)(id))onAdded;
 {
+    return [self sp_observe:kp removed:onRemoved added:onAdded initial:NO];
+}
+-(SPKVObservation*)sp_observe:(NSString*)kp removed:(void(^)(id))onRemoved added:(void(^)(id))onAdded initial:(BOOL)callbackInitial;
+{
     onAdded = [[onAdded copy] autorelease] ?:(id)^(){};
     onRemoved = [[onRemoved copy] autorelease] ?:(id)^(){};
     
-    return [self sp_addObserver:nil forKeyPath:kp options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew callback:^(NSDictionary *change, id object, NSString *keyPath) {
+    int options = NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew;
+    if(callbackInitial)
+        options |= NSKeyValueObservingOptionInitial;
+    return [self sp_addObserver:nil forKeyPath:kp options:options callback:^(NSDictionary *change, id object, NSString *keyPath) {
         id olds = [change objectForKey:NSKeyValueChangeOldKey];
         id news = [change objectForKey:NSKeyValueChangeNewKey];
         if(![olds conformsToProtocol:@protocol(NSFastEnumeration)])
