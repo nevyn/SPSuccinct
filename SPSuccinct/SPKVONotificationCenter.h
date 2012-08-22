@@ -1,5 +1,7 @@
 #import <Foundation/Foundation.h>
 
+#define SPS_KEYPATH(object, property) ((void)(NO && ((void)object.property, NO)), @#property)
+
 typedef void(^SPKVOCallback)(NSDictionary* change, id object, NSString* keyPath);
 
 @interface SPKVObservation : NSObject

@@ -58,3 +58,5 @@ void SPRemoveAssociatedDependencies(id owner);
 	SPDependsWeakSelf selff = self; /* Weak reference*/ \
 	SPAddDependencyV(self, associationName, object, keypath, __VA_ARGS__, nil);\
 })
+
+#define SPD_PAIR(object, property) object, SPS_KEYPATH(object, property)
