@@ -5,7 +5,7 @@
 typedef void(^SPKVOCallback)(NSDictionary* change, id object, NSString* keyPath);
 
 @interface SPKVObservation : NSObject
--(void)invalidate;
+-(id)invalidate;
 @end
 
 

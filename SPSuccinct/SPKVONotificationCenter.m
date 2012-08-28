@@ -49,10 +49,11 @@ typedef void (*SPKVOCallbackFunc)(id, SEL, NSDictionary*, id, NSString *);
 	else
 		[_observer observeValueForKeyPath:keyPath ofObject:object change:change context:self];
 }
--(void)invalidate;
+-(id)invalidate;
 {
 	[_observed removeObserver:self forKeyPath:_keyPath];
 	_observed = nil;
+    return self;
 }
 @end
 
