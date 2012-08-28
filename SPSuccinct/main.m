@@ -1,7 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "SPDepends.h"
-#import "SPFunctional.h"
-#import "SPLowVerbosity.h"
+#import <SPSuccinct/SPSuccinct.h>
 
 @interface Foo : NSObject
 @property(retain) NSString *a, *b;
