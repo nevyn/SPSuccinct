@@ -1,5 +1,12 @@
 #import "SPLowVerbosity.h"
 
+NSString *$ipadPath(NSString *path)
+{
+    NSString *ext = [path pathExtension];
+    NSString *base = [path stringByDeletingPathExtension];
+    return $sprintf(@"%@~ipad.%@", base, ext);
+}
+
 NSString *$urlencode(NSString *unencoded) {
 	// Thanks, http://www.tikirobot.net/wp/2007/01/27/url-encode-in-cocoa/
     CFStringRef ret = CFURLCreateStringByAddingPercentEscapes(
@@ -26,6 +33,14 @@ id SPDictionaryWithPairs(NSArray *pairs, BOOL mutablep)
 		values[kvi++] = [pairs objectAtIndex:idx++];
 	}
 	return [mutablep?[NSMutableDictionary class]:[NSDictionary class] dictionaryWithObjects:values forKeys:keys count:kvi];
+}
+
+id SPDictionaryMerge(id dictionary1, id dictionary2, BOOL mutablep)
+{
+    NSMutableDictionary *result = [NSMutableDictionary dictionaryWithDictionary:dictionary1];
+    for (id key in dictionary2)
+        result[key] = dictionary2[key];
+    return (mutablep ? result : [NSDictionary dictionaryWithDictionary:result]);
 }
 
 NSError *$makeErr(NSString *domain, NSInteger code, NSString *localizedDesc)

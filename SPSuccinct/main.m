@@ -39,6 +39,8 @@ int main (int argc, const char * argv[]) {
         return $num([obj intValue]*2);
     }]);
     
+    NSLog(@"Yay dict fake literals %@", $dict(@"foo", @"bar"));
+    
 	
 	[pool drain];
 	return 0;
