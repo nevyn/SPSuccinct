@@ -1,9 +1,12 @@
-typedef void(^SPDependsCallback)();
-typedef void(^SPDependsFancyCallback)(NSDictionary *change, id object, NSString *keyPath);
-
+#import <Foundation/Foundation.h>
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+@class SPDependency;
+typedef void(^SPDependsCallback)();
+typedef void(^SPDependsFancyCallback)(NSDictionary *change, id object, NSString *keyPath);
+#define SPD_PAIR(object, property) object, SPS_KEYPATH(object, property)
 
 /**
  * Add a dependency from an object to another object.
@@ -29,21 +32,18 @@ extern "C" {
  *      selff.thing = foo.bar*3 + foo.baz - a.b;
  *  });
  */
-id SPAddDependency(id owner, NSString *associationName, NSArray *dependenciesAndNames, SPDependsCallback callback);
+SPDependency *SPAddDependency(id owner, NSString *associationName, NSArray *dependenciesAndNames, SPDependsCallback callback);
 /**
  * Like SPAddDependency, but can be called varg style without an explicit array object.
  * End with the callback and then nil.
  */
-id SPAddDependencyV(id owner, NSString *associationName, ...) NS_REQUIRES_NIL_TERMINATION;
+SPDependency *SPAddDependencyV(id owner, NSString *associationName, ...) NS_REQUIRES_NIL_TERMINATION;
 
-/**
- * Removes all dependencies this object has on other objects.
- */
+/// Remove all dependencies this object has on other objects.
 void SPRemoveAssociatedDependencies(id owner);
+/// Remove a single dependency by name.
+void SPRemoveAssociatedDependency(id owner, NSString *associationName);
 
-#ifdef __cplusplus
-}
-#endif
 
 #if __has_feature(objc_arc)
 #define SPDependsWeakSelf __weak __typeof(self)
@@ -51,12 +51,18 @@ void SPRemoveAssociatedDependencies(id owner);
 #define SPDependsWeakSelf __block __typeof(self)
 #endif
 
-/**
- * Shortcut for SPAddDependencyV
- */
+//// Shortcut for SPAddDependencyV
 #define $depends(associationName, object, keypath, ...) ({ \
-	SPDependsWeakSelf selff = self; /* Weak reference*/ \
-	SPAddDependencyV(self, associationName, object, keypath, __VA_ARGS__, nil);\
+    SPDependsWeakSelf selff = self; /* Weak reference*/ \
+    SPAddDependencyV(self, associationName, object, keypath, __VA_ARGS__, nil);\
 })
 
-#define SPD_PAIR(object, property) object, SPS_KEYPATH(object, property)
+@interface SPDependency : NSObject
+-(void)invalidate;
+@end
+
+
+
+#ifdef __cplusplus
+}
+#endif

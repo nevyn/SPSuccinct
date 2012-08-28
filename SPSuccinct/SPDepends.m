@@ -2,7 +2,7 @@
 #import "SPKVONotificationCenter.h"
 #import <objc/runtime.h>
 
-@interface SPDependency : NSObject
+@interface SPDependency ()
 @property(copy) SPDependsFancyCallback callback;
 @property(assign) id owner;
 @property(retain) NSMutableArray *subscriptions;
@@ -12,104 +12,130 @@
 @synthesize callback = _callback, owner = _owner;
 @synthesize subscriptions = _subscriptions;
 
--(id)initWithDependencies:(NSArray*)pairs callback:(SPDependsFancyCallback)callback owner:(id)owner;
+- (id)initWithDependencies:(NSArray*)pairs callback:(SPDependsFancyCallback)callback owner:(id)owner
 {
-	
-	self.callback = callback;
-	self.owner = owner;
-	
-	self.subscriptions = [NSMutableArray array];
-	
-	SPKVONotificationCenter *nc = [SPKVONotificationCenter defaultCenter];
-	
-	
-	NSEnumerator *en = [pairs objectEnumerator];
-	id object = [en nextObject];
-	id next = [en nextObject];
-	
-	for(;;) {
-		SPKVObservation *subscription = [nc addObserver:self toObject:object forKeyPath:next options:0 selector:@selector(somethingChanged:inObject:forKey:)];
-		[_subscriptions addObject:subscription];
-		
-		next = [en nextObject];
-		if(!next) break;
-		
-		if(![next isKindOfClass:[NSString class]]) {
-			object = next;
-			next = [en nextObject];
-		}
-	}
-	
-	self.callback(nil, nil, nil);
-	
-	return self;
+    if (!(self = [super init]))
+        return nil;
+    
+    self.callback = callback;
+    self.owner = owner;
+    
+    _subscriptions = [NSMutableArray new];
+    
+    SPKVONotificationCenter *nc = [SPKVONotificationCenter defaultCenter];
+    
+    NSEnumerator *en = [pairs objectEnumerator];
+    id object = [en nextObject];
+    id next = [en nextObject];
+    
+    for(;;) {
+        SPKVObservation *subscription = [nc addObserver:self toObject:object forKeyPath:next options:0 selector:@selector(somethingChanged:inObject:forKey:)];
+        [_subscriptions addObject:subscription];
+        
+        next = [en nextObject];
+        if (!next)
+            break;
+        
+        if (![next isKindOfClass:[NSString class]]) {
+            object = next;
+            next = [en nextObject];
+        }
+    }
+    
+    self.callback(nil, nil, nil);
+    
+    return self;
 }
 -(void)invalidate;
 {
-	for(SPKVObservation *observation in _subscriptions)
-		[observation invalidate];
-	self.callback = nil;
+    for(SPKVObservation *observation in _subscriptions)
+        [observation invalidate];
+    self.callback = nil;
 }
 -(void)dealloc;
 {
-	self.subscriptions = nil;
-	self.owner = nil;
-	self.callback = nil;
-	[super dealloc];
+    [self invalidate];
+    self.subscriptions = nil;
+    self.owner = nil;
+    self.callback = nil;
+    [super dealloc];
 }
--(void)somethingChanged:(NSDictionary*)change inObject:(id)object forKey:(NSString*)key;
+-(void)somethingChanged:(NSDictionary*)change inObject:(id)object forKey:(NSString*)key
 {
-#ifdef _DEBUG
-	NSAssert(self.callback != nil, @"Somehow a KVO reached us after an 'invalidate'?");
+#if _DEBUG
+    NSAssert(self.callback != nil, @"Somehow a KVO reached us after an 'invalidate'?");
 #endif
-	if(self.callback)
-		self.callback(change, object, key);
+    if (self.callback)
+        self.callback(change, object, key);
 }
 @end
 
 static void *dependenciesKey = &dependenciesKey;
 
-id SPAddDependency(id owner, NSString *associationName, NSArray *dependenciesAndNames, SPDependsCallback callback)
+SPDependency *SPAddDependency(id owner, NSString *associationName, NSArray *dependenciesAndNames, SPDependsCallback callback)
 {
-	id dep = [[[SPDependency alloc] initWithDependencies:dependenciesAndNames callback:(SPDependsFancyCallback)callback owner:owner] autorelease];
-	if(owner && associationName) {
-		NSMutableDictionary *dependencies = objc_getAssociatedObject(owner, dependenciesKey);
-		if(!dependencies) dependencies = [NSMutableDictionary dictionary];
+    id dep = [[SPDependency alloc] initWithDependencies:dependenciesAndNames callback:callback owner:owner];
+    if(owner && associationName) {
+        NSMutableDictionary *dependencies = objc_getAssociatedObject(owner, dependenciesKey);
+        if(!dependencies) dependencies = [NSMutableDictionary dictionary];
 
-		SPDependency *oldDependency = [dependencies objectForKey:associationName];
-		if(oldDependency) [oldDependency invalidate];
-		
-		[dependencies setObject:dep forKey:associationName];
-		objc_setAssociatedObject(owner, dependenciesKey, dependencies, OBJC_ASSOCIATION_RETAIN);
-	}
-	return dep;
+        SPDependency *oldDependency = dependencies[associationName];
+        if(oldDependency) [oldDependency invalidate];
+        
+        dependencies[associationName] = dep;
+        objc_setAssociatedObject(owner, dependenciesKey, dependencies, OBJC_ASSOCIATION_RETAIN);
+        [dep release];
+    } else {
+        // Try to avoid autorelease, so only do it when we can't guarantee the life length of the dep longer
+        // than the runloop.
+        [dep autorelease];
+    }
+    return dep;
 }
 
-id SPAddDependencyV(id owner, NSString *associationName, ...)
+SPDependency *SPAddDependencyV(id owner, NSString *associationName, ...)
 {
-	NSMutableArray *dependenciesAndNames = [NSMutableArray new];
-	va_list va;
-	va_start(va, associationName);
-	
-	id object = va_arg(va, id);
-	id peek = va_arg(va, id);
-	do {
-		[dependenciesAndNames addObject:object];
-		object = peek;
-		peek = va_arg(va, id);
-	} while(peek != nil);
-	
-	id dep = SPAddDependency(owner, associationName, dependenciesAndNames, object);
-	
-	[dependenciesAndNames release];
-	return dep;
+    NSMutableArray *dependenciesAndNames = [NSMutableArray new];
+    va_list va;
+    va_start(va, associationName);
+    
+    id object = va_arg(va, id);
+    id peek = va_arg(va, id);
+    
+#if defined (_DEBUG) || SP_WITH_QA_TESTING
+    NSCAssert(object, @"Dependency argument is nil.");
+    NSCAssert(peek, @"Dependency argument is nil.");
+#endif
+    
+    if (object == nil || peek == nil)
+        return nil;
+    
+    do {
+        [dependenciesAndNames addObject:object];
+        object = peek;
+        peek = va_arg(va, id);
+    } while(peek != nil);
+    
+    id dep = SPAddDependency(owner, associationName, dependenciesAndNames, object);
+    
+    [dependenciesAndNames release];
+    return dep;
 }
 
 void SPRemoveAssociatedDependencies(id owner)
 {
-	NSMutableDictionary *dependencies = objc_getAssociatedObject(owner, dependenciesKey);
-	for(SPDependency *dep in [dependencies allValues])
-		[dep invalidate];
-	
-	objc_setAssociatedObject(owner, dependenciesKey, nil, OBJC_ASSOCIATION_RETAIN);
+    NSMutableDictionary *dependencies = objc_getAssociatedObject(owner, dependenciesKey);
+    for(SPDependency *dep in [dependencies allValues])
+        [dep invalidate];
+    
+    objc_setAssociatedObject(owner, dependenciesKey, nil, OBJC_ASSOCIATION_RETAIN);
+}
+
+void SPRemoveAssociatedDependency(id owner, NSString *associationName)
+{
+    NSMutableDictionary *dependencies = objc_getAssociatedObject(owner, dependenciesKey);
+    SPDependency *dep = dependencies[associationName];
+    [dep invalidate];
+    if (dep)
+        [dependencies removeObjectForKey:associationName];
 }
