@@ -39,7 +39,7 @@ id SPDictionaryMerge(id dictionary1, id dictionary2, BOOL mutablep)
 {
     NSMutableDictionary *result = [NSMutableDictionary dictionaryWithDictionary:dictionary1];
     for (id key in dictionary2)
-        result[key] = dictionary2[key];
+        [result setObject:[dictionary2 objectForKey:key] forKey:key];
     return (mutablep ? result : [NSDictionary dictionaryWithDictionary:result]);
 }
 

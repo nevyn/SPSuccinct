@@ -79,10 +79,10 @@ SPDependency *SPAddDependency(id owner, NSString *associationName, NSArray *depe
         NSMutableDictionary *dependencies = objc_getAssociatedObject(owner, dependenciesKey);
         if(!dependencies) dependencies = [NSMutableDictionary dictionary];
 
-        SPDependency *oldDependency = dependencies[associationName];
+        SPDependency *oldDependency = [dependencies objectForKey:associationName];
         if(oldDependency) [oldDependency invalidate];
         
-        dependencies[associationName] = dep;
+        [dependencies setObject:dep forKey:associationName];
         objc_setAssociatedObject(owner, dependenciesKey, dependencies, OBJC_ASSOCIATION_RETAIN);
         [dep release];
     } else {
@@ -134,7 +134,7 @@ void SPRemoveAssociatedDependencies(id owner)
 void SPRemoveAssociatedDependency(id owner, NSString *associationName)
 {
     NSMutableDictionary *dependencies = objc_getAssociatedObject(owner, dependenciesKey);
-    SPDependency *dep = dependencies[associationName];
+    SPDependency *dep = [dependencies objectForKey:associationName];
     [dep invalidate];
     if (dep)
         [dependencies removeObjectForKey:associationName];
