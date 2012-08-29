@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <SPSuccinct/SPSuccinct.h>
+#import "SPLifetimeGlue.h"
 
 @interface Foo : NSObject
 @property(retain) NSString *a, *b;
@@ -15,7 +16,8 @@
 	x.b = @"there";
 	
 	// This line establishes a dependency from 'self' to x.a, x.b and y.a.
-	$depends(@"printing", x, @"a", @"b", y, @"a", ^{
+    // Try to make a typo in the SPD_PAIR macro!
+	$depends(@"printing", x, @"a", @"b", SPD_PAIR(y, a), ^{
 		NSLog(@"%@ %@, %@", x.a, x.b, selff.y.a);
 	});
 	// It is called once after the dependency is established, similarly to as if
@@ -39,6 +41,15 @@ int main (int argc, const char * argv[]) {
     
     NSLog(@"Yay dict fake literals %@", $dict(@"foo", @"bar"));
     
+    Foo *foo = [Foo new];
+    NSArray *objs = [[NSArray alloc] initWithObjects:foo, nil];
+    [SPLifetimeGlue watchLifetimes:objs callback:^(SPLifetimeGlue *glue, id objectThatDied) {
+        NSLog(@"Foo died");
+    }];
+    [objs release];
+    NSLog(@"Will now kill foo:");
+    [foo release];
+    NSLog(@"Foo should be dead.");
 	
 	[pool drain];
 	return 0;

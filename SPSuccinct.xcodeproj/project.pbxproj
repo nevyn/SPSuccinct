@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0503076215EE2B5E00815951 /* SPLifetimeGlue.m in Sources */ = {isa = PBXBuildFile; fileRef = 0503076115EE2B5E00815951 /* SPLifetimeGlue.m */; };
 		0523C10B13C9EB6500C72DB5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0523C10A13C9EB6500C72DB5 /* Foundation.framework */; };
 		0523C10E13C9EB6500C72DB5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0523C10D13C9EB6500C72DB5 /* main.m */; };
 		0523C11213C9EB6500C72DB5 /* SPSuccinct.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0523C11113C9EB6500C72DB5 /* SPSuccinct.1 */; };
@@ -30,6 +31,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0503076015EE2B5E00815951 /* SPLifetimeGlue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPLifetimeGlue.h; sourceTree = "<group>"; };
+		0503076115EE2B5E00815951 /* SPLifetimeGlue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPLifetimeGlue.m; sourceTree = "<group>"; };
 		0523C10613C9EB6500C72DB5 /* SPSuccinct */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SPSuccinct; sourceTree = BUILT_PRODUCTS_DIR; };
 		0523C10A13C9EB6500C72DB5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		0523C10D13C9EB6500C72DB5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -97,6 +100,8 @@
 				0523C11B13C9EC2200C72DB5 /* SPKVONotificationCenter.m */,
 				0523C11C13C9EC2200C72DB5 /* SPLowVerbosity.h */,
 				0523C11D13C9EC2200C72DB5 /* SPLowVerbosity.m */,
+				0503076015EE2B5E00815951 /* SPLifetimeGlue.h */,
+				0503076115EE2B5E00815951 /* SPLifetimeGlue.m */,
 				0523C10F13C9EB6500C72DB5 /* Supporting Files */,
 			);
 			path = SPSuccinct;
@@ -162,6 +167,7 @@
 				0523C11F13C9EC2200C72DB5 /* SPKVONotificationCenter.m in Sources */,
 				0523C12013C9EC2200C72DB5 /* SPLowVerbosity.m in Sources */,
 				05FFF0AA14AD34F20096896D /* SPFunctional.m in Sources */,
+				0503076215EE2B5E00815951 /* SPLifetimeGlue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -4,6 +4,14 @@
 
 typedef void(^SPKVOCallback)(NSDictionary* change, id object, NSString* keyPath);
 
+enum {
+    /// By default, SPKVONC holds on to the observation after it has been added, and automatically invalidates
+    /// when either 'observer' or 'observed' dies. You can disable this behavior with the ManualLifetime
+    /// flag.
+    SPKeyValueObservingOptionManualLifetime = 1 << 8,
+};
+
+
 @interface SPKVObservation : NSObject
 -(void)invalidate;
 @end

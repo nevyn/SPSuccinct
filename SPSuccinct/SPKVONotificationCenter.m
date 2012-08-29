@@ -1,6 +1,7 @@
 #import "SPKVONotificationCenter.h"
 #import <libkern/OSAtomic.h>
 #import <objc/message.h>
+#import "SPLifetimeGlue.h"
 
 // Inspired by http://www.mikeash.com/svn/MAKVONotificationCenter/MAKVONotificationCenter.m
 
@@ -9,6 +10,7 @@ static NSString *SPKVOContext = @"SPKVObservation";
 typedef void (*SPKVOCallbackFunc)(id, SEL, NSDictionary*, id, NSString *);
 
 @interface SPKVObservation ()
+@property(nonatomic, assign) BOOL automaticLifetime;
 @property(nonatomic, assign) id observer;
 @property(nonatomic, assign) id observed;
 @property(nonatomic, copy)   NSString *keyPath;
@@ -18,14 +20,35 @@ typedef void (*SPKVOCallbackFunc)(id, SEL, NSDictionary*, id, NSString *);
 
 
 @implementation SPKVObservation
+@synthesize automaticLifetime = _automaticLifetime;
 @synthesize observer = _observer, observed = _observed, selector = _sel, keyPath = _keyPath, callback = _callback;
 -(id)initWithObserver:(id)observer observed:(id)observed keyPath:(NSString*)keyPath selector:(SEL)sel callback:(SPKVOCallback)callback options:(NSKeyValueObservingOptions)options;
 {
+    if (!(self = [super init]))
+        return nil;
+    
+    _automaticLifetime = !(options & SPKeyValueObservingOptionManualLifetime);
+    options &= ~SPKeyValueObservingOptionManualLifetime;
+
 	_observer = observer;
 	_observed = observed;
 	_sel = sel;
 	self.callback = callback;
 	self.keyPath = keyPath;
+    
+    if (_automaticLifetime) {
+        __block __unsafe_unretained __typeof(self) weakSelf = self;
+        NSArray *objectsToWatch = [[NSArray alloc] initWithObjects:_observer, _observed, nil];
+        [SPLifetimeGlue watchLifetimes:objectsToWatch callback:^(SPLifetimeGlue *glue, id objectThatDied) {
+            [weakSelf invalidate];
+            glue.objectDied = nil;
+        }];
+        [objectsToWatch release];
+        
+        // Matched in invalidate
+        [self retain];
+    }
+    
 	[_observed addObserver:self forKeyPath:keyPath options:options context:SPKVOContext];
 	return self;
 }
