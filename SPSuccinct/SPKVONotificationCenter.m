@@ -76,6 +76,11 @@ typedef void (*SPKVOCallbackFunc)(id, SEL, NSDictionary*, id, NSString *);
 {
 	[_observed removeObserver:self forKeyPath:_keyPath];
 	_observed = nil;
+	
+    if (_automaticLifetime) {
+        [self autorelease];
+        _automaticLifetime = NO;
+    }
 }
 @end
 
