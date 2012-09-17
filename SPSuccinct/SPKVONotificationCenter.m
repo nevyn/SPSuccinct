@@ -15,13 +15,16 @@ typedef void (*SPKVOCallbackFunc)(id, SEL, NSDictionary*, id, NSString *);
 @property(nonatomic, assign) id observed;
 @property(nonatomic, copy)   NSString *keyPath;
 @property(nonatomic)         SEL selector;
-@property(nonatomic, copy) SPKVOCallback callback;
+@property(nonatomic, copy)   SPKVOCallback callback;
+@property(nonatomic, assign) SPLifetimeGlue *glue;
 @end
 
 
 @implementation SPKVObservation
 @synthesize automaticLifetime = _automaticLifetime;
 @synthesize observer = _observer, observed = _observed, selector = _sel, keyPath = _keyPath, callback = _callback;
+@synthesize glue = _glue;
+
 -(id)initWithObserver:(id)observer observed:(id)observed keyPath:(NSString*)keyPath selector:(SEL)sel callback:(SPKVOCallback)callback options:(NSKeyValueObservingOptions)options;
 {
     if (!(self = [super init]))
@@ -39,7 +42,7 @@ typedef void (*SPKVOCallbackFunc)(id, SEL, NSDictionary*, id, NSString *);
     if (_automaticLifetime) {
         __block __unsafe_unretained __typeof(self) weakSelf = self;
         NSArray *objectsToWatch = [[NSArray alloc] initWithObjects:_observer, _observed, nil];
-        [SPLifetimeGlue watchLifetimes:objectsToWatch callback:^(SPLifetimeGlue *glue, id objectThatDied) {
+        self.glue = [SPLifetimeGlue watchLifetimes:objectsToWatch callback:^(SPLifetimeGlue *glue, id objectThatDied) {
             [weakSelf invalidate];
             glue.objectDied = nil;
         }];
@@ -78,6 +81,7 @@ typedef void (*SPKVOCallbackFunc)(id, SEL, NSDictionary*, id, NSString *);
 	_observed = nil;
 	
     if (_automaticLifetime) {
+        self.glue.objectDied = nil;
         [self autorelease];
         _automaticLifetime = NO;
     }
