@@ -3,6 +3,7 @@
 
 @interface NSObject (SPLifetimeGlue)
 - (void)sp_notifyingDealloc;
+- (void)sp_fakeDealloc;
 @end
 
 @implementation SPLifetimeGlue
@@ -41,46 +42,39 @@ static void *SPLifetimeObserversKey = &SPLifetimeObserversKey;
 
 - (void)addSelfAsDeallocListenerTo:(id)object
 {
+    Class sourceClass = object_getClass(object);
+    
     // A Class can never die, so don't add a listener to it. Remove these two lines to have your mind explode.
-    if (object == [object class])
+    if (class_isMetaClass(sourceClass))
         return;
     
-    Class origClass = [object class];
-    NSString *altClassName = [NSString stringWithFormat:@"%@_%@", SPLifetimeGlueClassPrefix, NSStringFromClass(origClass)];
-    Class altClass = NSClassFromString(altClassName);
+    NSMutableArray *observers = objc_getAssociatedObject(object, SPLifetimeObserversKey);
     
-    if ([NSStringFromClass(origClass) rangeOfString:SPLifetimeGlueClassPrefix].location != NSNotFound) {
-        altClass = origClass;
-        origClass = [object superclass];
-    }
-    
-    if (!altClass) {
-        altClass = objc_allocateClassPair(origClass, [altClassName UTF8String], 0);
-        
-        SEL sel = @selector(dealloc);
-        const char *deallocType = method_getTypeEncoding(class_getInstanceMethod([self class], sel));
-        IMP altMethodIMP = imp_implementationWithBlock(^(__unsafe_unretained id me) {
-            NSMutableArray *observers = objc_getAssociatedObject(me, SPLifetimeObserversKey);
-            
-            for(__typeof(self) observer in observers)
-                [observer preDealloc:me];
-            
-            void(*superIMP)(id, SEL) = (void(*)(id, SEL))[origClass instanceMethodForSelector:sel];
-            superIMP(me, sel);
-        });
-        class_addMethod(altClass, sel, altMethodIMP, deallocType);
-        objc_registerClassPair(altClass);
-    }
-    
-    if (![[object class] isEqual:altClass]) {
-        object_setClass(object, altClass);
-        NSMutableArray *observers = [[NSMutableArray alloc] init];
+    if(!observers) {
+        observers = [[NSMutableArray alloc] init];
         objc_setAssociatedObject(object, SPLifetimeObserversKey, observers, OBJC_ASSOCIATION_RETAIN);
         [observers release];
     }
     
-    NSMutableArray *observers = objc_getAssociatedObject(object, SPLifetimeObserversKey);
+    SEL origSel = sel_registerName("dealloc");
+    SEL altSel = sel_registerName("sp_fakeDealloc");
+    
+    if(![object respondsToSelector:altSel]) {
+        class_addMethod(sourceClass, altSel, imp_implementationWithBlock(^void(__unsafe_unretained id me) {
+            NSMutableArray *observers = objc_getAssociatedObject(me, SPLifetimeObserversKey);
+            
+            for(__typeof(self) observer in observers)
+                [observer preDealloc:me];
+
+            [me sp_fakeDealloc];
+        }), method_getTypeEncoding(class_getInstanceMethod(sourceClass, origSel)));
+
+        Method origMethod = class_getInstanceMethod(sourceClass, origSel);
+        class_addMethod(sourceClass, origSel, method_getImplementation(origMethod), method_getTypeEncoding(origMethod));
+        method_exchangeImplementations(class_getInstanceMethod(sourceClass, origSel), class_getInstanceMethod(sourceClass, altSel));
+        
+    }
+    
     [observers addObject:self];
 }
-
 @end
