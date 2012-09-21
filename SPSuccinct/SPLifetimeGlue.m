@@ -2,8 +2,7 @@
 #import <objc/runtime.h>
 
 @interface NSObject (SPLifetimeGlue)
-- (void)sp_notifyingDealloc;
-- (void)sp_fakeDealloc;
+- (void)sp_swizzledNotifyingDealloc;
 @end
 
 @implementation SPLifetimeGlue
@@ -57,7 +56,7 @@ static void *SPLifetimeObserversKey = &SPLifetimeObserversKey;
     }
     
     SEL origSel = sel_registerName("dealloc");
-    SEL altSel = sel_registerName("sp_fakeDealloc");
+    SEL altSel = sel_registerName("sp_swizzledNotifyingDealloc");
     
     if(![object respondsToSelector:altSel]) {
         class_addMethod(sourceClass, altSel, imp_implementationWithBlock(^void(__unsafe_unretained id me) {
@@ -66,7 +65,7 @@ static void *SPLifetimeObserversKey = &SPLifetimeObserversKey;
             for(__typeof(self) observer in observers)
                 [observer preDealloc:me];
 
-            [me sp_fakeDealloc];
+            [me sp_swizzledNotifyingDealloc];
         }), method_getTypeEncoding(class_getInstanceMethod(sourceClass, origSel)));
 
         Method origMethod = class_getInstanceMethod(sourceClass, origSel);
