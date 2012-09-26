@@ -8,4 +8,5 @@ typedef void(^SPLifetimeGlueCallback)(SPLifetimeGlue *glue, id objectThatDied);
 - (id)initWatchingLifetimesOfObjects:(NSArray*)objects callback:(SPLifetimeGlueCallback)callback;
 + (id)watchLifetimes:(NSArray*)objects callback:(SPLifetimeGlueCallback)callback;
 @property(nonatomic, copy) SPLifetimeGlueCallback objectDied;
+- (void)invalidate;
 @end

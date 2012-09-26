@@ -6,6 +6,10 @@
 @end
 
 @implementation SPLifetimeGlue
+{
+    NSMutableArray *_observeds;
+}
+
 + (id)watchLifetimes:(NSArray*)objects callback:(SPLifetimeGlueCallback)callback
 {
     return [[[self alloc] initWatchingLifetimesOfObjects:objects callback:callback] autorelease];
@@ -17,9 +21,12 @@
         return nil;
     
     self.objectDied = callback;
-    
+    CFArrayCallBacks callbacks = {0, NULL, NULL, CFCopyDescription, CFEqual};
+    _observeds = (id)CFArrayCreateMutable(NULL, 0, &callbacks);
+
     for(id object in objects)
         [self addSelfAsDeallocListenerTo:object];
+    [_observeds addObjectsFromArray:objects];
     
     return self;
 }
@@ -27,11 +34,13 @@
 - (void)dealloc;
 {
     self.objectDied = nil;
+    [_observeds release];
     [super dealloc];
 }
 
 - (void)preDealloc:(id)sender;
 {
+    [_observeds removeObject:sender];
     if (self.objectDied)
         self.objectDied(self, sender);
 }
@@ -76,4 +85,17 @@ static void *SPLifetimeObserversKey = &SPLifetimeObserversKey;
     
     [observers addObject:self];
 }
+
+- (void)invalidate
+{
+    [self retain];
+    self.objectDied = nil;
+    for(id obj in _observeds) {
+        NSMutableArray *observers = objc_getAssociatedObject(obj, SPLifetimeObserversKey);
+        [observers removeObject:self];
+    }
+    [self release];
+
+}
+
 @end

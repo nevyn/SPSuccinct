@@ -44,7 +44,7 @@ typedef void (*SPKVOCallbackFunc)(id, SEL, NSDictionary*, id, NSString *);
         NSArray *objectsToWatch = [[NSArray alloc] initWithObjects:_observer, _observed, nil];
         self.glue = [SPLifetimeGlue watchLifetimes:objectsToWatch callback:^(SPLifetimeGlue *glue, id objectThatDied) {
             [weakSelf invalidate];
-            glue.objectDied = nil;
+            [glue invalidate];
         }];
         [objectsToWatch release];
         
@@ -81,7 +81,7 @@ typedef void (*SPKVOCallbackFunc)(id, SEL, NSDictionary*, id, NSString *);
 	_observed = nil;
 	
     if (_automaticLifetime) {
-        self.glue.objectDied = nil;
+        [self.glue invalidate];
         [self autorelease];
         _automaticLifetime = NO;
     }
