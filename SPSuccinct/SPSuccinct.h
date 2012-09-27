@@ -2,3 +2,4 @@
 #import <SPSuccinct/SPDepends.h>
 #import <SPSuccinct/SPFunctional.h>
 #import <SPSuccinct/SPLowVerbosity.h>
+#import <SPSuccinct/SPDebugging.h>
