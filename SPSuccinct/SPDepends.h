@@ -68,6 +68,20 @@ void SPRemoveAssociatedDependency(id owner, NSString *associationName);
 -(void)invalidate;
 @end
 
+// ObjC aliases to the above C functions
+@interface NSObject (SPDepends)
+// Associates; automatic lifetime.
+- (SPDependency*)sp_addDependency:(NSString*)depName on:(NSArray*)dependenciesAndNames changed:(SPDependsCallback)changed;
+- (SPDependency*)sp_addDependency:(NSString*)depName on:(NSArray*)dependenciesAndNames target:(id)target action:(SEL)action;
+
+// Does not associate: you must retain these SPDependencies until you're done with them
+- (SPDependency*)sp_addDependencyOn:(NSArray*)dependenciesAndNames changed:(SPDependsCallback)changed;
+- (SPDependency*)sp_addDependencyOn:(NSArray*)dependenciesAndNames target:(id)target action:(SEL)action;
+
+- (void)sp_removeDependency:(NSString*)name;
+- (void)sp_removeDependencies;
+@end
+
 
 
 #ifdef __cplusplus

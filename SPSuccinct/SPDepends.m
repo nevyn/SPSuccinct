@@ -147,3 +147,33 @@ void SPRemoveAssociatedDependency(id owner, NSString *associationName)
     if (dep)
         [dependencies removeObjectForKey:associationName];
 }
+
+@implementation NSObject (SPDepends)
+- (SPDependency*)sp_addDependency:(NSString*)depName on:(NSArray*)dependenciesAndNames changed:(SPDependsCallback)changed;
+{
+    return SPAddDependency(self, depName, dependenciesAndNames, changed);
+}
+
+- (SPDependency*)sp_addDependency:(NSString*)depName on:(NSArray*)dependenciesAndNames target:(id)target action:(SEL)action;
+{
+    return SPAddDependencyTA(self, depName, dependenciesAndNames, target, action);
+}
+- (SPDependency*)sp_addDependencyOn:(NSArray*)dependenciesAndNames changed:(SPDependsCallback)changed
+{
+    return [self sp_addDependency:nil on:dependenciesAndNames changed:changed];
+}
+- (SPDependency*)sp_addDependencyOn:(NSArray*)dependenciesAndNames target:(id)target action:(SEL)action
+{
+    return [self sp_addDependency:nil on:dependenciesAndNames target:target action:action];
+}
+
+- (void)sp_removeDependency:(NSString*)name
+{
+    SPRemoveAssociatedDependency(self, name);
+}
+
+- (void)sp_removeDependencies
+{
+    SPRemoveAssociatedDependencies(self);
+}
+@end

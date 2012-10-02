@@ -41,12 +41,14 @@ static int fooCount = 0;
 	$depends(@"printing", x, @"a", @"b", SPD_PAIR(y, a), ^{
 		NSLog(@"%@ %@, %@", x.a, x.b, selff.y.a);
 	});
-    SPAddDependencyTA(self, @"printing2", @[SPD_PAIR(y, a)], self, @selector(change:inObject:forKeyPath:));
-    SPAddDependencyTA(self, @"printing3", @[SPD_PAIR(y, a)], self, @selector(somethingHappened));
-	// It is called once after the dependency is established, similarly to as if
+    
+    SPAddDependencyTA(self, @"printing2", @[SPD_PAIR(y, a)], self, @selector(change:inObject:forKeyPath:)); // C syntax
+    [self sp_addDependency:@"printing3" on:@[SPD_PAIR(y, a)] target:self action:@selector(somethingHappened)]; // ObjC syntax
+    
+	// These are called once after the dependency is established, similarly to as if
 	// you had registered KVO with NSKeyValueObservingOptionInitial.
 	
-	// After changing y.a, the 'printing' dependency's block is ran, since
+	// After changing y.a, the 'printing' dependencies' blocks/actions are run, since
 	// 'self' now depends on y.a.
 	y.a = @"world!";
 }
