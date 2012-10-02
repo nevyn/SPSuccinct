@@ -33,6 +33,13 @@ typedef void(^SPDependsFancyCallback)(NSDictionary *change, id object, NSString 
  *  });
  */
 SPDependency *SPAddDependency(id owner, NSString *associationName, NSArray *dependenciesAndNames, SPDependsCallback callback);
+
+/**
+ * Like SPAddDependency, but takes a target-action pair instead. Action may take 0 to 3 arguments,
+ * just like SPDependsFancyCallback.
+ */
+SPDependency *SPAddDependencyTA(id owner, NSString *associationName, NSArray *dependenciesAndNames, __unsafe_unretained id target, SEL action);
+
 /**
  * Like SPAddDependency, but can be called varg style without an explicit array object.
  * End with the callback and then nil.

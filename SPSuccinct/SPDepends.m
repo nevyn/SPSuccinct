@@ -93,6 +93,14 @@ SPDependency *SPAddDependency(id owner, NSString *associationName, NSArray *depe
     return dep;
 }
 
+SPDependency *SPAddDependencyTA(id owner, NSString *associationName, NSArray *dependenciesAndNames, __unsafe_unretained id target, SEL action)
+{
+    __block __unsafe_unretained id unretainedTarget = target;
+    return SPAddDependency(owner, associationName, dependenciesAndNames, ^(NSDictionary *change, id object, NSString *keyPath){
+        [unretainedTarget methodForSelector:action](unretainedTarget, action, change, object, keyPath);
+    });
+}
+
 SPDependency *SPAddDependencyV(id owner, NSString *associationName, ...)
 {
     NSMutableArray *dependenciesAndNames = [NSMutableArray new];

@@ -2,12 +2,33 @@
 #import <SPSuccinct/SPSuccinct.h>
 #import "SPLifetimeGlue.h"
 
+static int fooCount = 0;
+
 @interface Foo : NSObject
 @property(retain) NSString *a, *b;
 @property(retain) Foo *y;
 @end
 @implementation Foo
 @synthesize a, b, y;
+- (id)init
+{
+    if (!(self = [super init]))
+        return nil;
+    fooCount++;
+    return self;
+}
+- (void)dealloc
+{
+    fooCount--;
+    self.a = nil;
+    self.b = nil;
+    self.y = nil;
+    [super dealloc];
+}
+- (id)retain
+{
+    return [super retain];
+}
 -(void)main;
 {
 	Foo *x = [[Foo new] autorelease];
@@ -20,12 +41,22 @@
 	$depends(@"printing", x, @"a", @"b", SPD_PAIR(y, a), ^{
 		NSLog(@"%@ %@, %@", x.a, x.b, selff.y.a);
 	});
+    SPAddDependencyTA(self, @"printing2", @[SPD_PAIR(y, a)], self, @selector(change:inObject:forKeyPath:));
+    SPAddDependencyTA(self, @"printing3", @[SPD_PAIR(y, a)], self, @selector(somethingHappened));
 	// It is called once after the dependency is established, similarly to as if
 	// you had registered KVO with NSKeyValueObservingOptionInitial.
 	
 	// After changing y.a, the 'printing' dependency's block is ran, since
 	// 'self' now depends on y.a.
 	y.a = @"world!";
+}
+- (void)change:(NSDictionary*)change inObject:(id)object forKeyPath:(NSString*)keyPath
+{
+    NSLog(@"Woah! %@ happened in -[%@ %@]!", change, object, keyPath);
+}
+- (void)somethingHappened
+{
+    NSLog(@"Something changed, but I have no idea what.");
 }
 @end
 
@@ -52,6 +83,9 @@ int main (int argc, const char * argv[]) {
     NSLog(@"Foo should be dead.");
 	
 	[pool drain];
+    
+    NSCAssert(fooCount == 0, @"Leaked a Foo");
+    
 	return 0;
 }
 
