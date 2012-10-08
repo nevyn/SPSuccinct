@@ -12,6 +12,7 @@
 #define $sprintf(...) [NSString stringWithFormat:__VA_ARGS__]
 #define $nsutf(cstr) [NSString stringWithUTF8String:cstr]
 #define $isIPad() (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+#define $isIPhone5() ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone && [UIScreen mainScreen].bounds.size.height == 568)
 
 #define $cast(klass, obj) ({\
     __typeof__(obj) obj2 = (obj); \
