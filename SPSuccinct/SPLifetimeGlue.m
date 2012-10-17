@@ -12,7 +12,13 @@
 
 + (id)watchLifetimes:(NSArray*)objects callback:(SPLifetimeGlueCallback)callback
 {
-    return [[[self alloc] initWatchingLifetimesOfObjects:objects callback:callback] autorelease];
+    if ([objects count] == 0)
+        return nil;
+    
+    id me = [[self alloc] initWatchingLifetimesOfObjects:objects callback:callback];
+    // ownership by observed objects acts as autorelease, so we can have a more well-determined lifetime than 'later'
+    [me release];
+    return me;
 }
 
 - (id)initWatchingLifetimesOfObjects:(NSArray*)objects callback:(SPLifetimeGlueCallback)callback
