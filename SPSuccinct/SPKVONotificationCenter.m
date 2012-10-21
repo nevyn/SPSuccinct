@@ -145,17 +145,26 @@ typedef void (*SPKVOCallbackFunc)(id, SEL, NSDictionary*, id, NSString *);
     return [self sp_addObserver:nil forKeyPath:kp options:options callback:^(NSDictionary *change, id object, NSString *keyPath) {
         id olds = [change objectForKey:NSKeyValueChangeOldKey];
         id news = [change objectForKey:NSKeyValueChangeNewKey];
+        //NSKeyValueChange kind = [[change objectForKey:NSKeyValueChangeKindKey] intValue];
+        
         if(![olds conformsToProtocol:@protocol(NSFastEnumeration)])
             olds = olds ? [NSArray arrayWithObject:olds] : [NSArray array];
         if(![news conformsToProtocol:@protocol(NSFastEnumeration)])
             news = news ? [NSArray arrayWithObject:news] : [NSArray array];
         
-        for(id old in olds)
-            if(![news containsObject:old])
-                onRemoved(old);
-        for(id new in news)
-            if(![olds containsObject:new])
-                onAdded(new);
+        if([olds isEqual:@[[NSNull null]]])
+            onRemoved(nil);
+        else
+            for(id old in olds)
+                if(![news containsObject:old])
+                    onRemoved(old);
+        
+        if([news isEqual:@[[NSNull null]]])
+            onAdded(nil);
+        else
+            for(id new in news)
+                if(![olds containsObject:new])
+                    onAdded(new);
     }];
 }
 @end
