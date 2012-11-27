@@ -124,11 +124,13 @@ typedef void (*SPKVOCallbackFunc)(id, SEL, NSDictionary*, id, NSString *);
 @implementation NSObject (SPKVONotificationCenterAddition)
 -(SPKVObservation*)sp_addObserver:(NSObject*)observer forKeyPath:(NSString*)kp options:(NSKeyValueObservingOptions)options selector:(SEL)sel
 {
-	return [[SPKVONotificationCenter defaultCenter] addObserver:observer toObject:self forKeyPath:kp options:options selector:sel];
+	SPKVObservation *helper = [[[SPKVObservation alloc] initWithObserver:observer observed:self keyPath:kp selector:sel callback:nil options:options] autorelease];
+	return helper;
 }
 -(SPKVObservation*)sp_addObserver:(NSObject*)observer forKeyPath:(NSString*)kp options:(NSKeyValueObservingOptions)options callback:(void(^)(NSDictionary*, id, NSString*))callback
 {
-	return [[SPKVONotificationCenter defaultCenter] addObserver:observer toObject:self forKeyPath:kp options:options callback:callback];
+	SPKVObservation *helper = [[[SPKVObservation alloc] initWithObserver:observer observed:self keyPath:kp selector:NULL callback:callback options:options] autorelease];
+	return helper;
 }
 -(SPKVObservation*)sp_observe:(NSString*)kp removed:(void(^)(id))onRemoved added:(void(^)(id))onAdded;
 {

@@ -22,14 +22,12 @@
     
     _subscriptions = [NSMutableArray new];
     
-    SPKVONotificationCenter *nc = [SPKVONotificationCenter defaultCenter];
-    
     NSEnumerator *en = [pairs objectEnumerator];
     id object = [en nextObject];
     id next = [en nextObject];
     
     for(;;) {
-        SPKVObservation *subscription = [nc addObserver:self toObject:object forKeyPath:next options:0 selector:@selector(somethingChanged:inObject:forKey:)];
+        SPKVObservation *subscription = [object sp_addObserver:self forKeyPath:next options:0 selector:@selector(somethingChanged:inObject:forKey:)];
         [_subscriptions addObject:subscription];
         
         next = [en nextObject];
