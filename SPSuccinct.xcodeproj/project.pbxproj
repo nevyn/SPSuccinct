@@ -23,7 +23,10 @@
 		0588ABE116651B0A0028B2A7 /* SPKVONotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0523C11B13C9EC2200C72DB5 /* SPKVONotificationCenter.m */; };
 		0588ABE216651B0A0028B2A7 /* SPLowVerbosity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0523C11D13C9EC2200C72DB5 /* SPLowVerbosity.m */; };
 		0588ABE316651B0A0028B2A7 /* SPLifetimeGlue.m in Sources */ = {isa = PBXBuildFile; fileRef = 0503076115EE2B5E00815951 /* SPLifetimeGlue.m */; };
-		0588ABE416651B170028B2A7 /* succinctTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0588ABA6166515C90028B2A7 /* succinctTests.m */; };
+		0588ABEF16651C0B0028B2A7 /* SPLifetimeGlueTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0588ABEE16651C0B0028B2A7 /* SPLifetimeGlueTest.m */; };
+		0588ABF316651CE60028B2A7 /* SPKVONCTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0588ABF216651CE60028B2A7 /* SPKVONCTest.m */; };
+		0588ABF616651FDD0028B2A7 /* SPFunctionalTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0588ABF516651FDD0028B2A7 /* SPFunctionalTest.m */; };
+		0588ABF9166527DD0028B2A7 /* SPDependsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0588ABF8166527DD0028B2A7 /* SPDependsTest.m */; };
 		05FFF0AA14AD34F20096896D /* SPFunctional.m in Sources */ = {isa = PBXBuildFile; fileRef = 05FFF0A914AD34F20096896D /* SPFunctional.m */; };
 /* End PBXBuildFile section */
 
@@ -68,14 +71,20 @@
 		0588AB99166515C90028B2A7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		0588ABA1166515C90028B2A7 /* succinctTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "succinctTests-Info.plist"; sourceTree = "<group>"; };
 		0588ABA3166515C90028B2A7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		0588ABA5166515C90028B2A7 /* succinctTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = succinctTests.h; sourceTree = "<group>"; };
-		0588ABA6166515C90028B2A7 /* succinctTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = succinctTests.m; sourceTree = "<group>"; };
 		0588ABB816651AB30028B2A7 /* libsuccinct.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libsuccinct.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		0588ABB916651AB40028B2A7 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		0588ABBC16651AB40028B2A7 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		0588ABBD16651AB40028B2A7 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		0588ABBE16651AB40028B2A7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		0588ABCA16651AB40028B2A7 /* succinctTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = succinctTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0588ABED16651C0B0028B2A7 /* SPLifetimeGlueTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPLifetimeGlueTest.h; sourceTree = "<group>"; };
+		0588ABEE16651C0B0028B2A7 /* SPLifetimeGlueTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPLifetimeGlueTest.m; sourceTree = "<group>"; };
+		0588ABF116651CE60028B2A7 /* SPKVONCTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPKVONCTest.h; sourceTree = "<group>"; };
+		0588ABF216651CE60028B2A7 /* SPKVONCTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPKVONCTest.m; sourceTree = "<group>"; };
+		0588ABF416651FDD0028B2A7 /* SPFunctionalTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPFunctionalTest.h; sourceTree = "<group>"; };
+		0588ABF516651FDD0028B2A7 /* SPFunctionalTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPFunctionalTest.m; sourceTree = "<group>"; };
+		0588ABF7166527DC0028B2A7 /* SPDependsTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPDependsTest.h; sourceTree = "<group>"; };
+		0588ABF8166527DD0028B2A7 /* SPDependsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPDependsTest.m; sourceTree = "<group>"; };
 		05B9BDB515ECD3D60097118C /* SPSuccinct.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPSuccinct.h; sourceTree = "<group>"; };
 		05FFF0A814AD34F20096896D /* SPFunctional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPFunctional.h; sourceTree = "<group>"; };
 		05FFF0A914AD34F20096896D /* SPFunctional.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPFunctional.m; sourceTree = "<group>"; };
@@ -175,8 +184,14 @@
 		0588AB9F166515C90028B2A7 /* succinctTests */ = {
 			isa = PBXGroup;
 			children = (
-				0588ABA5166515C90028B2A7 /* succinctTests.h */,
-				0588ABA6166515C90028B2A7 /* succinctTests.m */,
+				0588ABED16651C0B0028B2A7 /* SPLifetimeGlueTest.h */,
+				0588ABEE16651C0B0028B2A7 /* SPLifetimeGlueTest.m */,
+				0588ABF116651CE60028B2A7 /* SPKVONCTest.h */,
+				0588ABF216651CE60028B2A7 /* SPKVONCTest.m */,
+				0588ABF416651FDD0028B2A7 /* SPFunctionalTest.h */,
+				0588ABF516651FDD0028B2A7 /* SPFunctionalTest.m */,
+				0588ABF7166527DC0028B2A7 /* SPDependsTest.h */,
+				0588ABF8166527DD0028B2A7 /* SPDependsTest.m */,
 				0588ABA0166515C90028B2A7 /* Supporting Files */,
 			);
 			path = succinctTests;
@@ -347,7 +362,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0588ABE416651B170028B2A7 /* succinctTests.m in Sources */,
+				0588ABEF16651C0B0028B2A7 /* SPLifetimeGlueTest.m in Sources */,
+				0588ABF316651CE60028B2A7 /* SPKVONCTest.m in Sources */,
+				0588ABF616651FDD0028B2A7 /* SPFunctionalTest.m in Sources */,
+				0588ABF9166527DD0028B2A7 /* SPDependsTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -396,6 +414,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -416,6 +435,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -548,6 +568,7 @@
 				0588ABDB16651AB40028B2A7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0588ABDC16651AB40028B2A7 /* Build configuration list for PBXNativeTarget "succinctTests" */ = {
 			isa = XCConfigurationList;
@@ -556,6 +577,7 @@
 				0588ABDE16651AB40028B2A7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
