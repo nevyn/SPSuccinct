@@ -1,5 +1,6 @@
 #import "SPLifetimeGlue.h"
 #import <objc/runtime.h>
+#import <objc/message.h>
 
 @interface NSObject (SPLifetimeGlue)
 - (void)sp_swizzledNotifyingDealloc;
@@ -73,14 +74,29 @@ static void *SPLifetimeObserversKey = &SPLifetimeObserversKey;
     SEL origSel = sel_registerName("dealloc");
     SEL altSel = sel_registerName("sp_swizzledNotifyingDealloc");
     
-    if(![object respondsToSelector:altSel]) {
+    // Does this specific class have a swizzled dealloc? (can't use respondsToSelector, since super might
+    // have an implementation that we can't use)
+    BOOL needsSwizzle = YES;
+    unsigned int methodCount = 0;
+    Method *methods = class_copyMethodList(sourceClass, &methodCount);
+    for(int i = 0; i < methodCount; i++) {
+        if(sel_isEqual(method_getName(methods[i]), altSel)) {
+            needsSwizzle = NO;
+            break;
+        }
+    }
+    
+    if(needsSwizzle) {
         class_addMethod(sourceClass, altSel, imp_implementationWithBlock(^void(__unsafe_unretained id me) {
             NSMutableArray *observers = objc_getAssociatedObject(me, SPLifetimeObserversKey);
             
             for(__typeof(self) observer in observers)
                 [observer preDealloc:me];
-
-            [me sp_swizzledNotifyingDealloc];
+            
+            struct objc_super objcsuper;
+            objcsuper.receiver = me;
+            objcsuper.super_class = sourceClass;
+            objc_msgSendSuper(&objcsuper, altSel);
         }), method_getTypeEncoding(class_getInstanceMethod(sourceClass, origSel)));
 
         Method origMethod = class_getInstanceMethod(sourceClass, origSel);
