@@ -55,9 +55,12 @@
 static NSString *const SPLifetimeGlueClassPrefix = @"__SPLifetimeObserving_";
 static void *SPLifetimeObserversKey = &SPLifetimeObserversKey;
 
+static NSMutableSet *swizzledClasses;
+
 - (void)addSelfAsDeallocListenerTo:(id)object
 {
-    Class sourceClass = object_getClass(object);
+    // Swizzling NSKVODealloc crashes, which happens if you use object_getClass(object) instead of [object class]
+    Class sourceClass = [object class];
     
     // A Class can never die, so don't add a listener to it. Remove these two lines to have your mind explode.
     if (class_isMetaClass(sourceClass))
@@ -72,37 +75,28 @@ static void *SPLifetimeObserversKey = &SPLifetimeObserversKey;
     }
     
     SEL origSel = sel_registerName("dealloc");
-    SEL altSel = sel_registerName("sp_swizzledNotifyingDealloc");
     
-    // Does this specific class have a swizzled dealloc? (can't use respondsToSelector, since super might
-    // have an implementation that we can't use)
-    BOOL needsSwizzle = YES;
-    unsigned int methodCount = 0;
-    Method *methods = class_copyMethodList(sourceClass, &methodCount);
-    for(int i = 0; i < methodCount; i++) {
-        if(sel_isEqual(method_getName(methods[i]), altSel)) {
-            needsSwizzle = NO;
-            break;
-        }
-    }
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        swizzledClasses = [NSMutableSet new];
+    });
     
-    if(needsSwizzle) {
-        class_addMethod(sourceClass, altSel, imp_implementationWithBlock(^void(__unsafe_unretained id me) {
+    if(![swizzledClasses containsObject:sourceClass]) {
+        [swizzledClasses addObject:sourceClass];
+        
+        Method origMethod = class_getInstanceMethod(sourceClass, origSel);
+        IMP origImpl = method_getImplementation(origMethod);
+        
+        IMP altImpl = imp_implementationWithBlock(^void(__unsafe_unretained id me) {
             NSMutableArray *observers = objc_getAssociatedObject(me, SPLifetimeObserversKey);
             
             for(__typeof(self) observer in observers)
                 [observer preDealloc:me];
             
-            struct objc_super objcsuper;
-            objcsuper.receiver = me;
-            objcsuper.super_class = sourceClass;
-            objc_msgSendSuper(&objcsuper, altSel);
-        }), method_getTypeEncoding(class_getInstanceMethod(sourceClass, origSel)));
-
-        Method origMethod = class_getInstanceMethod(sourceClass, origSel);
-        class_addMethod(sourceClass, origSel, method_getImplementation(origMethod), method_getTypeEncoding(origMethod));
-        method_exchangeImplementations(class_getInstanceMethod(sourceClass, origSel), class_getInstanceMethod(sourceClass, altSel));
+            ((void(*)(id, SEL))origImpl)(me, origSel);
+        });
         
+        class_replaceMethod(sourceClass, origSel, altImpl, method_getTypeEncoding(origMethod));
     }
     
     [observers addObject:self];
