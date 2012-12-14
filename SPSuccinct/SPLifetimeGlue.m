@@ -2,13 +2,19 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 
+static const void *NopRetainer(CFAllocatorRef allocator, const void *value) {
+    return value;
+}
+static void NopReleaser(CFAllocatorRef allocator, const void *value) {}
+
+
 @interface NSObject (SPLifetimeGlue)
 - (void)sp_swizzledNotifyingDealloc;
 @end
 
 @implementation SPLifetimeGlue
 {
-    NSMutableArray *_observeds;
+    CFMutableArrayRef _observeds;
 }
 
 + (id)watchLifetimes:(NSArray*)objects callback:(SPLifetimeGlueCallback)callback
@@ -28,12 +34,12 @@
         return nil;
     
     self.objectDied = callback;
-    CFArrayCallBacks callbacks = {0, NULL, NULL, CFCopyDescription, CFEqual};
-    _observeds = (id)CFArrayCreateMutable(NULL, 0, &callbacks);
+    CFArrayCallBacks callbacks = {0, NopRetainer, NopReleaser, CFCopyDescription, CFEqual};
+    _observeds = CFArrayCreateMutable(NULL, 0, &callbacks);
 
     for(id object in objects)
         [self addSelfAsDeallocListenerTo:object];
-    [_observeds addObjectsFromArray:objects];
+    CFArrayAppendArray(_observeds, (CFArrayRef)objects, CFRangeMake(0, [objects count]));
     
     return self;
 }
@@ -41,13 +47,16 @@
 - (void)dealloc;
 {
     self.objectDied = nil;
-    [_observeds release];
+    CFRelease(_observeds);
     [super dealloc];
 }
 
 - (void)preDealloc:(id)sender;
 {
-    [_observeds removeObject:sender];
+    
+    CFIndex idx = CFArrayGetFirstIndexOfValue(_observeds, CFRangeMake(0, CFArrayGetCount(_observeds)), sender);
+    CFArrayRemoveValueAtIndex(_observeds, idx);
+    
     if (self.objectDied)
         self.objectDied(self, sender);
 }
@@ -88,10 +97,16 @@ static NSMutableSet *swizzledClasses;
         IMP origImpl = method_getImplementation(origMethod);
         
         IMP altImpl = imp_implementationWithBlock(^void(__unsafe_unretained id me) {
-            NSMutableArray *observers = objc_getAssociatedObject(me, SPLifetimeObserversKey);
+            CFMutableArrayRef observers = (CFMutableArrayRef)objc_getAssociatedObject(me, SPLifetimeObserversKey);
             
-            for(__typeof(self) observer in observers)
-                [observer preDealloc:me];
+            if (observers) {
+                //Copy as preDealloc modifies the array.
+                CFArrayRef observersCopy = CFArrayCreateCopy(NULL, observers);
+                for(__typeof(self) observer in (NSArray *)observersCopy)
+                    [observer preDealloc:me];
+                
+                CFRelease(observersCopy);
+            }
             
             ((void(*)(id, SEL))origImpl)(me, origSel);
         });
@@ -106,7 +121,7 @@ static NSMutableSet *swizzledClasses;
 {
     [self retain];
     self.objectDied = nil;
-    for(id obj in _observeds) {
+    for(id obj in (NSArray*)_observeds) {
         NSMutableArray *observers = objc_getAssociatedObject(obj, SPLifetimeObserversKey);
         [observers removeObject:self];
     }
