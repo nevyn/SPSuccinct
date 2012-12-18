@@ -23,6 +23,7 @@
     (klass*)obj2;\
 })
 #define $castIf(klass, obj) ({ __typeof__(obj) obj2 = (obj); [obj2 isKindOfClass:[klass class]]?(klass*)obj2:nil; })
+#define $castIfConforms(protokol, obj) ({ [obj conformsToProtocol:@protocol(protokol)]?(id<protokol>)obj:nil; })
 
 #define $notNull(x) ({ __typeof(x) xx = (x); NSAssert(xx != nil, @"Must not be nil"); xx; })
 
