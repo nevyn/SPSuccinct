@@ -1,5 +1,18 @@
 #import <Foundation/Foundation.h>
 
+/**
+ * This macro takes an object and a property name and expands into a string
+ * literal with the property name. It generates a compile-time error if the
+ * given object does not have the specified property.
+ *
+ * It is possible to use chains of properties, SPS_KEYPATH(obj, a.b) will for
+ * instance expand into something that evaluates to @"a.b".
+ *
+ * The purpose of this macro is to serve as a helper when you need a KVC
+ * keypath. The fact that it generates a compile time error is very valuable:
+ * Without it, things like KVO callbacks will just be silently ignored when the
+ * property it observes is renamed or removed.
+ */
 #define SPS_KEYPATH(object, property) ((void)(NO && ((void)object.property, NO)), @#property)
 
 typedef void(^SPKVOCallback)(NSDictionary* change, id object, NSString* keyPath);
