@@ -10,7 +10,6 @@
 #define $num(val) [NSNumber numberWithInt:val]
 #define $numf(val) [NSNumber numberWithDouble:val]
 #define $sprintf(...) [NSString stringWithFormat:__VA_ARGS__]
-#define $nsutf(cstr) [NSString stringWithUTF8String:cstr]
 #define $isIPad() (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 #define $isIPhone5() ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone && [UIScreen mainScreen].bounds.size.height == 568)
 
