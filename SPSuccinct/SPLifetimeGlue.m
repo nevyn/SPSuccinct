@@ -44,14 +44,14 @@ static void NopReleaser(CFAllocatorRef allocator, const void *value) {}
     return self;
 }
 
-- (void)dealloc;
+- (void)dealloc
 {
     self.objectDied = nil;
     CFRelease(_observeds);
     [super dealloc];
 }
 
-- (void)preDealloc:(id)sender;
+- (void)preDealloc:(id)sender
 {
     
     CFIndex idx = CFArrayGetFirstIndexOfValue(_observeds, CFRangeMake(0, CFArrayGetCount(_observeds)), sender);

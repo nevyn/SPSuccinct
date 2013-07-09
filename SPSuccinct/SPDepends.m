@@ -44,13 +44,15 @@
     
     return self;
 }
--(void)invalidate;
+
+-(void)invalidate
 {
     for(SPKVObservation *observation in _subscriptions)
         [observation invalidate];
     self.callback = nil;
 }
--(void)dealloc;
+
+-(void)dealloc
 {
     [self invalidate];
     self.subscriptions = nil;
@@ -58,6 +60,7 @@
     self.callback = nil;
     [super dealloc];
 }
+
 -(void)somethingChanged:(NSDictionary*)change inObject:(id)object forKey:(NSString*)key
 {
 #if _DEBUG
@@ -147,12 +150,12 @@ void SPRemoveAssociatedDependency(id owner, NSString *associationName)
 }
 
 @implementation NSObject (SPDepends)
-- (SPDependency*)sp_addDependency:(NSString*)depName on:(NSArray*)dependenciesAndNames changed:(SPDependsCallback)changed;
+- (SPDependency*)sp_addDependency:(NSString*)depName on:(NSArray*)dependenciesAndNames changed:(SPDependsCallback)changed
 {
     return SPAddDependency(self, depName, dependenciesAndNames, changed);
 }
 
-- (SPDependency*)sp_addDependency:(NSString*)depName on:(NSArray*)dependenciesAndNames target:(id)target action:(SEL)action;
+- (SPDependency*)sp_addDependency:(NSString*)depName on:(NSArray*)dependenciesAndNames target:(id)target action:(SEL)action
 {
     return SPAddDependencyTA(self, depName, dependenciesAndNames, target, action);
 }

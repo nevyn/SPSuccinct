@@ -25,7 +25,7 @@ typedef void (*SPKVOCallbackFunc)(id, SEL, NSDictionary*, id, NSString *);
 @synthesize observer = _observer, observed = _observed, selector = _sel, keyPath = _keyPath, callback = _callback;
 @synthesize glue = _glue;
 
--(id)initWithObserver:(id)observer observed:(id)observed keyPath:(NSString*)keyPath selector:(SEL)sel callback:(SPKVOCallback)callback options:(NSKeyValueObservingOptions)options;
+-(id)initWithObserver:(id)observer observed:(id)observed keyPath:(NSString*)keyPath selector:(SEL)sel callback:(SPKVOCallback)callback options:(NSKeyValueObservingOptions)options
 {
     if (!(self = [super init]))
         return nil;
@@ -56,12 +56,14 @@ typedef void (*SPKVOCallbackFunc)(id, SEL, NSDictionary*, id, NSString *);
 	[_observed addObserver:self forKeyPath:keyPath options:options context:SPKVOContext];
 	return self;
 }
--(void)dealloc;
+
+-(void)dealloc
 {
 	[self invalidate];
 	[_keyPath release];
 	[super dealloc];
 }
+
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if(context != SPKVOContext) {
@@ -76,7 +78,8 @@ typedef void (*SPKVOCallbackFunc)(id, SEL, NSDictionary*, id, NSString *);
 	else
 		[_observer observeValueForKeyPath:keyPath ofObject:object change:change context:self];
 }
--(void)invalidate;
+
+-(void)invalidate
 {
 	[_observed removeObserver:self forKeyPath:_keyPath];
 	_observed = nil;
@@ -94,6 +97,7 @@ typedef void (*SPKVOCallbackFunc)(id, SEL, NSDictionary*, id, NSString *);
 
 
 @implementation SPKVONotificationCenter
+
 + (id)defaultCenter
 {
 	static SPKVONotificationCenter *center = nil;
@@ -105,38 +109,46 @@ typedef void (*SPKVOCallbackFunc)(id, SEL, NSDictionary*, id, NSString *);
 	}
 	return center;
 }
--(SPKVObservation*)addObserver:(id)observer toObject:(id)observed forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options;
+
+-(SPKVObservation *)addObserver:(id)observer toObject:(id)observed forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options
 {
 	return [self addObserver:observer toObject:observed forKeyPath:keyPath options:options selector:NULL];
 }
--(SPKVObservation*)addObserver:(id)observer toObject:(id)observed forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options selector:(SEL)sel;
+
+-(SPKVObservation *)addObserver:(id)observer toObject:(id)observed forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options selector:(SEL)sel
 {
 	SPKVObservation *helper = [[[SPKVObservation alloc] initWithObserver:observer observed:observed keyPath:keyPath selector:sel callback:nil options:options] autorelease];
 	return helper;
 }
--(SPKVObservation*)addObserver:(id)observer toObject:(id)observed forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options callback:(SPKVOCallback)callback;
+
+-(SPKVObservation *)addObserver:(id)observer toObject:(id)observed forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options callback:(SPKVOCallback)callback
 {
 	SPKVObservation *helper = [[[SPKVObservation alloc] initWithObserver:observer observed:observed keyPath:keyPath selector:NULL callback:callback options:options] autorelease];
 	return helper;
 }
+
 @end
 
 @implementation NSObject (SPKVONotificationCenterAddition)
--(SPKVObservation*)sp_addObserver:(NSObject*)observer forKeyPath:(NSString*)kp options:(NSKeyValueObservingOptions)options selector:(SEL)sel
+
+-(SPKVObservation *)sp_addObserver:(NSObject *)observer forKeyPath:(NSString *)kp options:(NSKeyValueObservingOptions)options selector:(SEL)sel
 {
 	SPKVObservation *helper = [[[SPKVObservation alloc] initWithObserver:observer observed:self keyPath:kp selector:sel callback:nil options:options] autorelease];
 	return helper;
 }
--(SPKVObservation*)sp_addObserver:(NSObject*)observer forKeyPath:(NSString*)kp options:(NSKeyValueObservingOptions)options callback:(void(^)(NSDictionary*, id, NSString*))callback
+
+-(SPKVObservation *)sp_addObserver:(NSObject *)observer forKeyPath:(NSString *)kp options:(NSKeyValueObservingOptions)options callback:(void(^)(NSDictionary*, id, NSString*))callback
 {
 	SPKVObservation *helper = [[[SPKVObservation alloc] initWithObserver:observer observed:self keyPath:kp selector:NULL callback:callback options:options] autorelease];
 	return helper;
 }
--(SPKVObservation*)sp_observe:(NSString*)kp removed:(void(^)(id))onRemoved added:(void(^)(id))onAdded;
+
+-(SPKVObservation *)sp_observe:(NSString *)kp removed:(void(^)(id))onRemoved added:(void(^)(id))onAdded
 {
     return [self sp_observe:kp removed:onRemoved added:onAdded initial:NO];
 }
--(SPKVObservation*)sp_observe:(NSString*)kp removed:(void(^)(id))onRemoved added:(void(^)(id))onAdded initial:(BOOL)callbackInitial;
+
+-(SPKVObservation *)sp_observe:(NSString *)kp removed:(void(^)(id))onRemoved added:(void(^)(id))onAdded initial:(BOOL)callbackInitial
 {
     onAdded = [[onAdded copy] autorelease] ?:(id)^(){};
     onRemoved = [[onRemoved copy] autorelease] ?:(id)^(){};
@@ -169,4 +181,5 @@ typedef void (*SPKVOCallbackFunc)(id, SEL, NSDictionary*, id, NSString *);
                     onAdded(new);
     }];
 }
+
 @end
