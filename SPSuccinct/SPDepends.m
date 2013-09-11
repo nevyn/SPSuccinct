@@ -98,7 +98,9 @@ SPDependency *SPAddDependencyTA(id owner, NSString *associationName, NSArray *de
 {
     __block __unsafe_unretained id unretainedTarget = target;
     return SPAddDependency(owner, associationName, dependenciesAndNames, ^(NSDictionary *change, id object, NSString *keyPath){
-        [unretainedTarget methodForSelector:action](unretainedTarget, action, change, object, keyPath);
+        typedef void (*ActionIMP)(id, SEL, NSDictionary *, id, NSString *);
+        ActionIMP actionIMP = (ActionIMP)[unretainedTarget methodForSelector:action];
+        actionIMP(unretainedTarget, action, change, object, keyPath);
     });
 }
 
