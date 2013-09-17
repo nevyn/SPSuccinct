@@ -64,6 +64,22 @@ typedef void (*SPKVOCallbackFunc)(id, SEL, NSDictionary*, id, NSString *);
 	[super dealloc];
 }
 
+- (NSString *)description
+{
+    NSString *observationDesc = nil;
+    if (self.observed == nil) {
+        observationDesc = @"invalidated";
+    } else if (self.callback) {
+        observationDesc = [NSString stringWithFormat:@"^%p <- %@@%p.%@", self.callback, [self.observed class], self.observed, self.keyPath];
+    } else if (self.selector) {
+        observationDesc = [NSString stringWithFormat:@"[%@@%p %@] <- %@@%p.%@", [self.observer class], self.observer, NSStringFromSelector(self.selector), [self.observed class], self.observed, self.keyPath];
+    } else {
+        observationDesc = [NSString stringWithFormat:@"[%@@%p observeValueForKeyPath:...] <- %@@%p.%@", [self.observer class], self.observer, [self.observed class], self.observed, self.keyPath];
+    }
+
+    return [NSString stringWithFormat:@"<%@ %p: %@>", self.class, self, observationDesc];
+}
+
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if(context != SPKVOContext) {
