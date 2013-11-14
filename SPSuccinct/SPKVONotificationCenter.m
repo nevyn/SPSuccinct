@@ -99,6 +99,7 @@ typedef void (*SPKVOCallbackFunc)(id, SEL, NSDictionary*, id, NSString *);
 {
 	[_observed removeObserver:self forKeyPath:_keyPath];
 	_observed = nil;
+	_observer = nil;
     
     if (_automaticLifetime) {
         [self.glue invalidate];
