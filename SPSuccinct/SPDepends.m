@@ -101,7 +101,6 @@ SPDependency *SPAddDependencyTA(id owner, NSString *associationName, NSArray *de
 
 SPDependency *SPAddDependencyV(id owner, NSString *associationName, ...)
 {
-    NSMutableArray *dependenciesAndNames = [NSMutableArray new];
     va_list va;
     va_start(va, associationName);
     
@@ -115,6 +114,8 @@ SPDependency *SPAddDependencyV(id owner, NSString *associationName, ...)
     
     if (object == nil || peek == nil)
         return nil;
+
+    NSMutableArray *dependenciesAndNames = [NSMutableArray new];
     
     do {
         [dependenciesAndNames addObject:object];
