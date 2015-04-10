@@ -208,7 +208,7 @@ typedef void(*spimp_removeObserver)(id me, SEL op, id observer, id keyPath, void
     return [name rangeOfString:@"_NSZombie_"].location != NSNotFound;
 }
 
-+ (NSArray *)stacktraceFrom:(NSInteger)offset
++ (NSArray *)stacktraceFrom:(int)offset
 {
     NSMutableArray *trace = [NSMutableArray array];
     void* callstack[128];

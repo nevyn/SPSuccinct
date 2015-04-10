@@ -8,7 +8,7 @@
 
 /// Collect a stacktrace as an array of NSStrings
 + (NSArray *)stacktrace;
-+ (NSArray *)stacktraceFrom:(NSInteger)offset;
++ (NSArray *)stacktraceFrom:(int)offset;
 
 /// Generate a breakpoint signal
 + (void)breakpoint;
