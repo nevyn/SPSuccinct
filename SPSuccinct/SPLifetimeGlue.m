@@ -61,7 +61,7 @@ static void NopReleaser(CFAllocatorRef allocator, const void *value) {}
         self.objectDied(self, sender);
 }
 
-static NSString *const SPLifetimeGlueClassPrefix = @"__SPLifetimeObserving_";
+//static NSString *const SPLifetimeGlueClassPrefix = @"__SPLifetimeObserving_";
 static void *SPLifetimeObserversKey = &SPLifetimeObserversKey;
 
 static NSMutableSet *swizzledClasses;

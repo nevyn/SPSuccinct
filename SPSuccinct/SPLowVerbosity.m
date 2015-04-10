@@ -17,7 +17,7 @@ NSString *$urlencode(NSString *unencoded) {
 														kCFStringEncodingUTF8
 														);
 #if __has_feature(objc_arc)
-    return [(__bridge id)ret;
+    return (__bridge id)ret;
 #else
     return [(id)ret autorelease];
 #endif
