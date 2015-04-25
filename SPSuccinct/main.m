@@ -23,16 +23,11 @@ static int fooCount = 0;
     self.a = nil;
     self.b = nil;
     self.y = nil;
-    [super dealloc];
-}
-- (id)retain
-{
-    return [super retain];
 }
 -(void)main;
 {
-	Foo *x = [[Foo new] autorelease];
-	self.y = [[Foo new] autorelease];
+	Foo *x = [Foo new];
+	self.y = [Foo new];
 	x.a = @"Hello";
 	x.b = @"there";
 	
@@ -63,28 +58,29 @@ static int fooCount = 0;
 @end
 
 int main (int argc, const char * argv[]) {
-	NSAutoreleasePool *pool = [NSAutoreleasePool new];
-	
-	[[[Foo new] autorelease] main];
+	@autoreleasepool {
+		[[Foo new] main];
     
     
-    NSLog(@"Yay multiplication: %@", [$array($num(1), $num(2), $num(3)) sp_map:^(id obj) {
-        return $num([obj intValue]*2);
-    }]);
-    
-    NSLog(@"Yay dict fake literals %@", $dict(@"foo", @"bar"));
-    
-    Foo *foo = [Foo new];
-    NSArray *objs = [[NSArray alloc] initWithObjects:foo, nil];
-    [SPLifetimeGlue watchLifetimes:objs callback:^(SPLifetimeGlue *glue, id objectThatDied) {
-        NSLog(@"Foo died");
-    }];
-    [objs release];
-    NSLog(@"Will now kill foo:");
-    [foo release];
-    NSLog(@"Foo should be dead.");
-	
-	[pool drain];
+		NSLog(@"Yay multiplication: %@", [$array($num(1), $num(2), $num(3)) sp_map:^(id obj) {
+			return $num([obj intValue]*2);
+		}]);
+		
+		NSLog(@"Yay dict fake literals %@", $dict(@"foo", @"bar"));
+		
+		{
+			Foo *foo = [Foo new];
+			{
+				NSArray *objs = [[NSArray alloc] initWithObjects:foo, nil];
+				[SPLifetimeGlue watchLifetimes:objs callback:^(SPLifetimeGlue *glue, id objectThatDied) {
+					NSLog(@"Foo died");
+				}];
+			}
+			NSLog(@"Will now kill foo:");
+		}
+		NSLog(@"Foo should be dead.");
+		
+	}
     
     NSCAssert(fooCount == 0, @"Leaked a Foo");
     

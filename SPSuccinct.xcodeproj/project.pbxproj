@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0503076215EE2B5E00815951 /* SPLifetimeGlue.m in Sources */ = {isa = PBXBuildFile; fileRef = 0503076115EE2B5E00815951 /* SPLifetimeGlue.m */; };
+		0503076215EE2B5E00815951 /* SPLifetimeGlue.m in Sources */ = {isa = PBXBuildFile; fileRef = 0503076115EE2B5E00815951 /* SPLifetimeGlue.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		0523C10B13C9EB6500C72DB5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0523C10A13C9EB6500C72DB5 /* Foundation.framework */; };
 		0523C10E13C9EB6500C72DB5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0523C10D13C9EB6500C72DB5 /* main.m */; };
 		0523C11213C9EB6500C72DB5 /* SPSuccinct.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0523C11113C9EB6500C72DB5 /* SPSuccinct.1 */; };
@@ -27,6 +27,7 @@
 		0588ABF316651CE60028B2A7 /* SPKVONCTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0588ABF216651CE60028B2A7 /* SPKVONCTest.m */; };
 		0588ABF616651FDD0028B2A7 /* SPFunctionalTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0588ABF516651FDD0028B2A7 /* SPFunctionalTest.m */; };
 		0588ABF9166527DD0028B2A7 /* SPDependsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0588ABF8166527DD0028B2A7 /* SPDependsTest.m */; };
+		058E32601AEB5BFF00D48035 /* SPDebugging.m in Sources */ = {isa = PBXBuildFile; fileRef = 058E325F1AEB5BFF00D48035 /* SPDebugging.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		05FFF0AA14AD34F20096896D /* SPFunctional.m in Sources */ = {isa = PBXBuildFile; fileRef = 05FFF0A914AD34F20096896D /* SPFunctional.m */; };
 /* End PBXBuildFile section */
 
@@ -85,6 +86,8 @@
 		0588ABF516651FDD0028B2A7 /* SPFunctionalTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPFunctionalTest.m; sourceTree = "<group>"; };
 		0588ABF7166527DC0028B2A7 /* SPDependsTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPDependsTest.h; sourceTree = "<group>"; };
 		0588ABF8166527DD0028B2A7 /* SPDependsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPDependsTest.m; sourceTree = "<group>"; };
+		058E325E1AEB5BFF00D48035 /* SPDebugging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPDebugging.h; sourceTree = "<group>"; };
+		058E325F1AEB5BFF00D48035 /* SPDebugging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPDebugging.m; sourceTree = "<group>"; };
 		05B9BDB515ECD3D60097118C /* SPSuccinct.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPSuccinct.h; sourceTree = "<group>"; };
 		05FFF0A814AD34F20096896D /* SPFunctional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPFunctional.h; sourceTree = "<group>"; };
 		05FFF0A914AD34F20096896D /* SPFunctional.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPFunctional.m; sourceTree = "<group>"; };
@@ -168,6 +171,8 @@
 				0523C11D13C9EC2200C72DB5 /* SPLowVerbosity.m */,
 				0503076015EE2B5E00815951 /* SPLifetimeGlue.h */,
 				0503076115EE2B5E00815951 /* SPLifetimeGlue.m */,
+				058E325E1AEB5BFF00D48035 /* SPDebugging.h */,
+				058E325F1AEB5BFF00D48035 /* SPDebugging.m */,
 				0523C10F13C9EB6500C72DB5 /* Supporting Files */,
 			);
 			path = SPSuccinct;
@@ -280,13 +285,15 @@
 			name = succinctTests;
 			productName = succinctTests;
 			productReference = 0588ABCA16651AB40028B2A7 /* succinctTests.octest */;
-			productType = "com.apple.product-type.bundle";
+			productType = "com.apple.product-type.bundle.ocunit-test";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		0523C0FD13C9EB6500C72DB5 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+			};
 			buildConfigurationList = 0523C10013C9EB6500C72DB5 /* Build configuration list for PBXProject "SPSuccinct" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
@@ -343,6 +350,7 @@
 				0523C12013C9EC2200C72DB5 /* SPLowVerbosity.m in Sources */,
 				05FFF0AA14AD34F20096896D /* SPFunctional.m in Sources */,
 				0503076215EE2B5E00815951 /* SPLifetimeGlue.m in Sources */,
+				058E32601AEB5BFF00D48035 /* SPDebugging.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -443,7 +451,6 @@
 		0523C11613C9EB6500C72DB5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_OBJC_ARC = NO;
 				CLANG_WARN_OBJCPP_ARC_ABI = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SPSuccinct/SPSuccinct-Prefix.pch";
@@ -456,7 +463,6 @@
 		0523C11713C9EB6500C72DB5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_OBJC_ARC = NO;
 				CLANG_WARN_OBJCPP_ARC_ABI = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SPSuccinct/SPSuccinct-Prefix.pch";
