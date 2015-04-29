@@ -58,14 +58,6 @@ void SPRemoveAssociatedDependency(id owner, NSString *associationName);
 #define SPDependsWeakSelf __block __typeof(self)
 #endif
 
-//// Shortcut for SPAddDependencyV
-/// This macro is deprecated. Please use sp_addDependency instead, since that
-/// will not discard source code location information.
-#define $depends(associationName, object, keypath, ...) ({ \
-    SPDependsWeakSelf selff = self; /* Weak reference*/ \
-    SPAddDependencyV(self, associationName, object, keypath, __VA_ARGS__, nil);\
-})
-
 @interface SPDependency : NSObject
 -(void)invalidate;
 @end
