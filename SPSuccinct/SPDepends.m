@@ -95,7 +95,8 @@ SPDependency *SPAddDependencyTA(id owner, NSString *associationName, NSArray *de
 {
     __block __unsafe_unretained id unretainedTarget = target;
     return SPAddDependency(owner, associationName, dependenciesAndNames, ^(NSDictionary *change, id object, NSString *keyPath){
-        [unretainedTarget methodForSelector:action](unretainedTarget, action, change, object, keyPath);
+        // must cast to appropriate function pointer. see OBJC_OLD_DISPATCH_PROTOTYPES
+        ((id(*)(id, SEL, ...))[unretainedTarget methodForSelector:action])(unretainedTarget, action, change, object, keyPath);
     });
 }
 
