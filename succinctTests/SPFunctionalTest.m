@@ -17,6 +17,6 @@
         return @([obj intValue] * 2);
     }];
     NSArray *expected = @[@2, @4, @6];
-    STAssertEqualObjects(doubles, expected, @"Multiplication of objects in map");
+    XCTAssertEqualObjects(doubles, expected, @"Multiplication of objects in map");
 }
 @end

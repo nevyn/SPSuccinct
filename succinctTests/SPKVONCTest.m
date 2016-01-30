@@ -24,7 +24,7 @@
         callbackTriggered = YES;
     }];
     dummy.property = 1;
-    STAssertTrue(callbackTriggered, @"Subscription object is still in scope and should have triggered");
+    XCTAssertTrue(callbackTriggered, @"Subscription object is still in scope and should have triggered");
     (void)sub;
 }
 
@@ -37,6 +37,6 @@
     }];
     [sub invalidate];
     dummy.property = 1;
-    STAssertFalse(callbackTriggered, @"Subscription object should be dead, and should not have triggered");
+    XCTAssertFalse(callbackTriggered, @"Subscription object should be dead, and should not have triggered");
 }
 @end

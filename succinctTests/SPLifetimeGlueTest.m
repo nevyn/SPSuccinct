@@ -25,7 +25,7 @@
             objectLives = NO;
         }];
     }
-    STAssertTrue(objectLives == NO, @"Object should have died when block dies");
+    XCTAssertTrue(objectLives == NO, @"Object should have died when block dies");
 }
 
 // Regression test: subscribing to a Base and then a Derived would infinite-loop, IOS-1718 at Spotify
@@ -40,7 +40,7 @@
             derivedLives = NO;
         }];
     }
-    STAssertTrue(derivedLives == NO, @"Object should have died when block dies");
+    XCTAssertTrue(derivedLives == NO, @"Object should have died when block dies");
 
     // 2. Watch lifetime on a Base instance, to swizzle its dealloc
     __block BOOL baseLives = YES;
@@ -51,7 +51,7 @@
             baseLives = NO;
         }];
     }
-    STAssertTrue(baseLives == NO, @"Object should have died when block dies");
+    XCTAssertTrue(baseLives == NO, @"Object should have died when block dies");
 
     // 3. Watch lifetime on a Derived instance. Now we have two swizzled deallocs in a chain.
     derivedLives = YES;
@@ -62,7 +62,7 @@
             derivedLives = NO;
         }];
     }
-    STAssertTrue(derivedLives == NO, @"Object should have died when block dies");
+    XCTAssertTrue(derivedLives == NO, @"Object should have died when block dies");
 
 }
 @end
