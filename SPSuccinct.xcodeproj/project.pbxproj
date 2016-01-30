@@ -87,7 +87,7 @@
 		05B9BDB515ECD3D60097118C /* SPSuccinct.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPSuccinct.h; sourceTree = "<group>"; };
 		05FFF0A814AD34F20096896D /* SPFunctional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPFunctional.h; sourceTree = "<group>"; };
 		05FFF0A914AD34F20096896D /* SPFunctional.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPFunctional.m; sourceTree = "<group>"; };
-		0800D40B1C5D28E9005662C5 /* SPGenerics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPGenerics.h; sourceTree = "<group>"; };
+		0800D40B1C5D28E9005662C5 /* SPGeneric.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPGeneric.h; sourceTree = "<group>"; };
 		0800D40E1C5D2995005662C5 /* SPGenericsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPGenericsTest.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -159,7 +159,7 @@
 				05B9BDB515ECD3D60097118C /* SPSuccinct.h */,
 				0523C11813C9EC2200C72DB5 /* SPDepends.h */,
 				0523C11913C9EC2200C72DB5 /* SPDepends.m */,
-				0800D40B1C5D28E9005662C5 /* SPGenerics.h */,
+				0800D40B1C5D28E9005662C5 /* SPGeneric.h */,
 				05FFF0A814AD34F20096896D /* SPFunctional.h */,
 				05FFF0A914AD34F20096896D /* SPFunctional.m */,
 				0523C11A13C9EC2200C72DB5 /* SPKVONotificationCenter.h */,

@@ -1,5 +1,5 @@
 //
-//  SPGenericsTest.m
+//  SPGenericTest.m
 //  SPSuccinct
 //
 //  Created by Brian Gerstle on 1/30/16.
@@ -7,14 +7,14 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "SPGenerics.h"
+#import "SPGeneric.h"
 
 // TODO: check declaration of custom generic class
 
 /**
- Compile-time test to ensure SPGenerics macro expands properly.
+ Compile-time test to ensure SPGeneric macro expands properly.
  */
-@interface SPGenericsTest : XCTestCase
+@interface SPGenericTest : XCTestCase
 @end
 
 // Should be able to declare types
@@ -23,7 +23,7 @@ typedef SPGeneric(NSArray, id<NSCoding>)* SPArrayOfSerializables;
 
 typedef SPGeneric(NSArray, NSDictionary*)* SPArrayOfDictionaries;
 
-@implementation SPGenericsTest
+@implementation SPGenericTest
 
 - (SPGeneric(NSArray, NSString*)*)strings {
     SPGeneric(NSArray, NSString*)* arrayOfStrings = @[@"foo"];
