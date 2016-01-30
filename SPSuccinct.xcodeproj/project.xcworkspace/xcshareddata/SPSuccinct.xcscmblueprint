@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "34B4AF48305C7FA7523672307D1AA0C20FCE3743",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "34B4AF48305C7FA7523672307D1AA0C20FCE3743" : 0,
+    "8FE608FC25EC59BD4A89F81BF9DCE6DC6F205F8F" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "8905D108-FECB-48B3-A7CF-D6F297B46BE9",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "34B4AF48305C7FA7523672307D1AA0C20FCE3743" : "SPSuccinct\/",
+    "8FE608FC25EC59BD4A89F81BF9DCE6DC6F205F8F" : ".."
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "SPSuccinct",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "SPSuccinct.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/nevyn\/SPSuccinct.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "34B4AF48305C7FA7523672307D1AA0C20FCE3743"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/lookback\/lookback-ios.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "8FE608FC25EC59BD4A89F81BF9DCE6DC6F205F8F"
+    }
+  ]
+}
