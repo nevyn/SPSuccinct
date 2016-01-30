@@ -28,6 +28,7 @@
 		0588ABF616651FDD0028B2A7 /* SPFunctionalTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0588ABF516651FDD0028B2A7 /* SPFunctionalTest.m */; };
 		0588ABF9166527DD0028B2A7 /* SPDependsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0588ABF8166527DD0028B2A7 /* SPDependsTest.m */; };
 		05FFF0AA14AD34F20096896D /* SPFunctional.m in Sources */ = {isa = PBXBuildFile; fileRef = 05FFF0A914AD34F20096896D /* SPFunctional.m */; };
+		0800D40F1C5D2995005662C5 /* SPGenericsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0800D40E1C5D2995005662C5 /* SPGenericsTest.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +89,8 @@
 		05B9BDB515ECD3D60097118C /* SPSuccinct.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPSuccinct.h; sourceTree = "<group>"; };
 		05FFF0A814AD34F20096896D /* SPFunctional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPFunctional.h; sourceTree = "<group>"; };
 		05FFF0A914AD34F20096896D /* SPFunctional.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPFunctional.m; sourceTree = "<group>"; };
+		0800D40B1C5D28E9005662C5 /* SPGenerics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPGenerics.h; sourceTree = "<group>"; };
+		0800D40E1C5D2995005662C5 /* SPGenericsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPGenericsTest.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,6 +163,7 @@
 				05B9BDB515ECD3D60097118C /* SPSuccinct.h */,
 				0523C11813C9EC2200C72DB5 /* SPDepends.h */,
 				0523C11913C9EC2200C72DB5 /* SPDepends.m */,
+				0800D40B1C5D28E9005662C5 /* SPGenerics.h */,
 				05FFF0A814AD34F20096896D /* SPFunctional.h */,
 				05FFF0A914AD34F20096896D /* SPFunctional.m */,
 				0523C11A13C9EC2200C72DB5 /* SPKVONotificationCenter.h */,
@@ -192,6 +196,7 @@
 				0588ABF516651FDD0028B2A7 /* SPFunctionalTest.m */,
 				0588ABF7166527DC0028B2A7 /* SPDependsTest.h */,
 				0588ABF8166527DD0028B2A7 /* SPDependsTest.m */,
+				0800D40E1C5D2995005662C5 /* SPGenericsTest.m */,
 				0588ABA0166515C90028B2A7 /* Supporting Files */,
 			);
 			path = succinctTests;
@@ -280,13 +285,16 @@
 			name = succinctTests;
 			productName = succinctTests;
 			productReference = 0588ABCA16651AB40028B2A7 /* succinctTests.octest */;
-			productType = "com.apple.product-type.bundle";
+			productType = "com.apple.product-type.bundle.ocunit-test";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		0523C0FD13C9EB6500C72DB5 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastTestingUpgradeCheck = 0720;
+			};
 			buildConfigurationList = 0523C10013C9EB6500C72DB5 /* Build configuration list for PBXProject "SPSuccinct" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
@@ -362,6 +370,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0800D40F1C5D2995005662C5 /* SPGenericsTest.m in Sources */,
 				0588ABEF16651C0B0028B2A7 /* SPLifetimeGlueTest.m in Sources */,
 				0588ABF316651CE60028B2A7 /* SPKVONCTest.m in Sources */,
 				0588ABF616651FDD0028B2A7 /* SPFunctionalTest.m in Sources */,
