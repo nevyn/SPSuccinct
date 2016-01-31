@@ -26,7 +26,7 @@
         callbackCount++;
     });
     dummy.property = 1;
-    STAssertTrue(callbackCount == 2, @"Should have triggered initial + 1");
+    XCTAssertTrue(callbackCount == 2, @"Should have triggered initial + 1");
     (void)sub;
 }
 
@@ -39,7 +39,7 @@
     });
     [sub invalidate];
     dummy.property = 1;
-    STAssertTrue(callbackCount == 1, @"Should have triggered initial + 1");
+    XCTAssertTrue(callbackCount == 1, @"Should have triggered initial + 1");
     (void)sub;
 }
 @end
